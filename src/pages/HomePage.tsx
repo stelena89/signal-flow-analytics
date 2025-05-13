@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { 
   ArrowRight, 
   BarChart, 
-  ChartLineUp, 
+  ChartLine, 
   Signal as SignalIcon, 
   BookOpen, 
   TrendingUp, 
@@ -162,7 +162,7 @@ const HomePage = () => {
 
             <div className="glass-card p-6 hover-card">
               <div className="rounded-full bg-primary/10 p-3 w-fit mb-4">
-                <ChartLineUp className="h-6 w-6 text-primary" />
+                <ChartLine className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Custom Indicators</h3>
               <p className="text-muted-foreground mb-4">

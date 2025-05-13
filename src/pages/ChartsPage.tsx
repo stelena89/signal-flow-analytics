@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,7 +38,7 @@ const ChartsPage = () => {
       id: "trend-following", 
       name: "Trend Following",
       description: "EMA, MACD, and RSI for trend identification",
-      icon: <ChartLineUp className="h-5 w-5" />,
+      icon: <ChartLine className="h-5 w-5" />,
       studies: ["MACD@tv-basicstudies", "RSI@tv-basicstudies", "EMA@tv-basicstudies"]
     },
     { 
@@ -234,7 +233,7 @@ const ChartsPage = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base flex items-center">
-                  <ChartLineUp className="h-4 w-4 mr-2" />
+                  <ChartLine className="h-4 w-4 mr-2" />
                   Template Info
                 </CardTitle>
               </CardHeader>

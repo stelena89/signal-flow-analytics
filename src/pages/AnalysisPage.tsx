@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CalendarIcon, Clock, Filter, Search, Tag } from "lucide-react";
+import { BarChart } from "lucide-react";
 
 interface Analysis {
   id: string;
