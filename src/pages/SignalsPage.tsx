@@ -32,6 +32,7 @@ import { Signal } from "@/components/SignalCard";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Sample signals data
 const sampleSignals: Signal[] = [
@@ -120,6 +121,7 @@ const sampleSignals: Signal[] = [
 ];
 
 const SignalsPage = () => {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [assetFilter, setAssetFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
@@ -174,21 +176,21 @@ const SignalsPage = () => {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Trading Signals</h1>
+            <h1 className="text-3xl font-bold mb-2">{t("signals.title")}</h1>
             <p className="text-muted-foreground">
-              Real-time and historical trading signals with precise entry, stop-loss, and take-profit levels.
+              {t("signals.description")}
             </p>
           </div>
           <Button className="mt-2 md:mt-0">
             <Clock className="mr-2 h-4 w-4" />
-            Subscribe to Signals
+            {t("signals.subscribe")}
           </Button>
         </div>
 
         <Tabs defaultValue="table" className="w-full mb-6">
           <TabsList>
-            <TabsTrigger value="table">Table View</TabsTrigger>
-            <TabsTrigger value="calendar">Calendar View</TabsTrigger>
+            <TabsTrigger value="table">{t("signals.tableView")}</TabsTrigger>
+            <TabsTrigger value="calendar">{t("signals.calendarView")}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="table" className="space-y-4">
@@ -196,31 +198,31 @@ const SignalsPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
               <div className="md:col-span-3">
                 <Input
-                  placeholder="Search by pair..."
+                  placeholder={t("signals.search")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
               <div className="md:col-span-2">
-                <Select value={assetFilter || ""} onValueChange={(val) => setAssetFilter(val === "" ? null : val)}>
+                <Select value={assetFilter || "all"} onValueChange={(val) => setAssetFilter(val === "all" ? null : val)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Asset Type" />
+                    <SelectValue placeholder={t("signals.assetType")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Assets</SelectItem>
-                    <SelectItem value="forex">Forex</SelectItem>
-                    <SelectItem value="crypto">Crypto</SelectItem>
-                    <SelectItem value="commodity">Commodities</SelectItem>
+                    <SelectItem value="all">{t("signals.allAssets")}</SelectItem>
+                    <SelectItem value="forex">{t("signals.forex")}</SelectItem>
+                    <SelectItem value="crypto">{t("signals.crypto")}</SelectItem>
+                    <SelectItem value="commodity">{t("signals.commodities")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="md:col-span-2">
-                <Select value={statusFilter || ""} onValueChange={(val) => setStatusFilter(val === "" ? null : val)}>
+                <Select value={statusFilter || "all"} onValueChange={(val) => setStatusFilter(val === "all" ? null : val)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Status" />
+                    <SelectValue placeholder={t("signals.status")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">{t("signals.allStatuses")}</SelectItem>
                     {uniqueStatuses.map((status) => (
                       <SelectItem key={status} value={status}>{status}</SelectItem>
                     ))}
@@ -228,12 +230,12 @@ const SignalsPage = () => {
                 </Select>
               </div>
               <div className="md:col-span-2">
-                <Select value={timeframeFilter || ""} onValueChange={(val) => setTimeframeFilter(val === "" ? null : val)}>
+                <Select value={timeframeFilter || "all"} onValueChange={(val) => setTimeframeFilter(val === "all" ? null : val)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Timeframe" />
+                    <SelectValue placeholder={t("signals.timeframe")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Timeframes</SelectItem>
+                    <SelectItem value="all">{t("signals.allTimeframes")}</SelectItem>
                     {uniqueTimeframes.map((tf) => (
                       <SelectItem key={tf} value={tf}>{tf}</SelectItem>
                     ))}
@@ -241,14 +243,14 @@ const SignalsPage = () => {
                 </Select>
               </div>
               <div className="md:col-span-2">
-                <Select value={directionFilter || ""} onValueChange={(val) => setDirectionFilter(val === "" ? null : val)}>
+                <Select value={directionFilter || "all"} onValueChange={(val) => setDirectionFilter(val === "all" ? null : val)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Direction" />
+                    <SelectValue placeholder={t("signals.direction")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Directions</SelectItem>
-                    <SelectItem value="BUY">BUY</SelectItem>
-                    <SelectItem value="SELL">SELL</SelectItem>
+                    <SelectItem value="all">{t("signals.allDirections")}</SelectItem>
+                    <SelectItem value="BUY">{t("signals.buy")}</SelectItem>
+                    <SelectItem value="SELL">{t("signals.sell")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -270,15 +272,15 @@ const SignalsPage = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Pair</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Entry</TableHead>
-                    <TableHead>Stop Loss</TableHead>
-                    <TableHead>Take Profit</TableHead>
-                    <TableHead>Timeframe</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Result</TableHead>
+                    <TableHead>{t("table.pair")}</TableHead>
+                    <TableHead>{t("table.type")}</TableHead>
+                    <TableHead>{t("table.entry")}</TableHead>
+                    <TableHead>{t("table.stopLoss")}</TableHead>
+                    <TableHead>{t("table.takeProfit")}</TableHead>
+                    <TableHead>{t("table.timeframe")}</TableHead>
+                    <TableHead>{t("table.date")}</TableHead>
+                    <TableHead>{t("table.status")}</TableHead>
+                    <TableHead>{t("table.result")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -299,7 +301,7 @@ const SignalsPage = () => {
                             ) : (
                               <TrendingDown className="h-3 w-3 mr-1" />
                             )}
-                            {signal.type}
+                            {signal.type === "BUY" ? t("signals.buy") : t("signals.sell")}
                           </Badge>
                         </TableCell>
                         <TableCell>{signal.entry}</TableCell>
@@ -331,7 +333,7 @@ const SignalsPage = () => {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={9} className="text-center h-24">
-                        <p className="text-muted-foreground">No signals found matching your filters.</p>
+                        <p className="text-muted-foreground">{t("signals.noSignalsFound")}</p>
                         <Button variant="link" onClick={() => {
                           setSearchTerm("");
                           setAssetFilter(null);
@@ -339,7 +341,7 @@ const SignalsPage = () => {
                           setTimeframeFilter(null);
                           setDirectionFilter(null);
                         }}>
-                          Clear all filters
+                          {t("signals.clearFilters")}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -354,17 +356,16 @@ const SignalsPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Calendar className="h-5 w-5 mr-2" />
-                  Signals Calendar View
+                  {t("signals.calendarView")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-center py-12">
                   <div className="flex flex-col items-center text-center">
                     <Calendar className="h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-medium">Calendar View Coming Soon</h3>
+                    <h3 className="text-lg font-medium">{t("signals.calendarSoon")}</h3>
                     <p className="text-muted-foreground max-w-md mt-2">
-                      We're working on a calendar view that will allow you to see signals organized by date. 
-                      Please check back soon or use the table view for now.
+                      {t("signals.calendarDescription")}
                     </p>
                   </div>
                 </div>
@@ -376,7 +377,7 @@ const SignalsPage = () => {
         {/* Selected Signal Detail */}
         {selectedSignal && (
           <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">Signal Details</h2>
+            <h2 className="text-2xl font-bold mb-4">{t("signal.details")}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-1">
                 <Card>
@@ -391,7 +392,7 @@ const SignalsPage = () => {
                         ) : (
                           <TrendingDown className="h-3 w-3 mr-1" />
                         )}
-                        {selectedSignal.type}
+                        {selectedSignal.type === "BUY" ? t("signals.buy") : t("signals.sell")}
                       </Badge>
                     </CardTitle>
                   </CardHeader>
@@ -399,30 +400,30 @@ const SignalsPage = () => {
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-muted-foreground text-sm">Entry</p>
+                          <p className="text-muted-foreground text-sm">{t("signal.entry")}</p>
                           <p className="font-medium">{selectedSignal.entry}</p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground text-sm">Stop Loss</p>
+                          <p className="text-muted-foreground text-sm">{t("signal.stopLoss")}</p>
                           <p className="font-medium text-negative">{selectedSignal.stopLoss}</p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground text-sm">Take Profit</p>
+                          <p className="text-muted-foreground text-sm">{t("signal.takeProfit")}</p>
                           <p className="font-medium text-positive">{selectedSignal.takeProfit}</p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground text-sm">Timeframe</p>
+                          <p className="text-muted-foreground text-sm">{t("signal.timeframe")}</p>
                           <p className="font-medium">{selectedSignal.timeframe}</p>
                         </div>
                       </div>
                       
                       <div className="pt-2 border-t border-border">
-                        <p className="text-muted-foreground text-sm">Date</p>
+                        <p className="text-muted-foreground text-sm">{t("signal.date")}</p>
                         <p className="font-medium">{selectedSignal.date}</p>
                       </div>
                       
                       <div className="pt-2 border-t border-border">
-                        <p className="text-muted-foreground text-sm">Status</p>
+                        <p className="text-muted-foreground text-sm">{t("signal.status")}</p>
                         <Badge
                           className={
                             selectedSignal.status === "ACTIVE" ? "bg-blue-500/20 text-blue-400" :
@@ -437,7 +438,7 @@ const SignalsPage = () => {
                       
                       {selectedSignal.pips !== undefined && (
                         <div className="pt-2 border-t border-border">
-                          <p className="text-muted-foreground text-sm">Result</p>
+                          <p className="text-muted-foreground text-sm">{t("signal.result")}</p>
                           <p className={selectedSignal.pips >= 0 ? "font-medium text-positive" : "font-medium text-negative"}>
                             {selectedSignal.pips >= 0 ? "+" : ""}{selectedSignal.pips} pips
                           </p>
@@ -453,7 +454,7 @@ const SignalsPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <ChartLine className="h-5 w-5 mr-2" />
-                      Signal Chart
+                      {t("signal.chart")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

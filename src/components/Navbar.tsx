@@ -19,23 +19,26 @@ import {
   Menu, 
   LogIn 
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navbar = () => {
   const location = useLocation();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { t } = useLanguage();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
   const navLinks = [
-    { title: "Home", path: "/", icon: <Home className="h-4 w-4 mr-2" /> },
-    { title: "Market Analysis", path: "/analysis", icon: <BarChart className="h-4 w-4 mr-2" /> },
-    { title: "Signals", path: "/signals", icon: <Signal className="h-4 w-4 mr-2" /> },
-    { title: "Charts Hub", path: "/charts", icon: <ChartLine className="h-4 w-4 mr-2" /> },
-    { title: "My Indicators", path: "/indicators", icon: <Settings className="h-4 w-4 mr-2" /> },
-    { title: "Blog", path: "/blog", icon: <BookOpen className="h-4 w-4 mr-2" /> },
-    { title: "About", path: "/about", icon: <Info className="h-4 w-4 mr-2" /> },
+    { title: t("nav.home"), path: "/", icon: <Home className="h-4 w-4 mr-2" /> },
+    { title: t("nav.analysis"), path: "/analysis", icon: <BarChart className="h-4 w-4 mr-2" /> },
+    { title: t("nav.signals"), path: "/signals", icon: <Signal className="h-4 w-4 mr-2" /> },
+    { title: t("nav.charts"), path: "/charts", icon: <ChartLine className="h-4 w-4 mr-2" /> },
+    { title: t("nav.indicators"), path: "/indicators", icon: <Settings className="h-4 w-4 mr-2" /> },
+    { title: t("nav.blog"), path: "/blog", icon: <BookOpen className="h-4 w-4 mr-2" /> },
+    { title: t("nav.about"), path: "/about", icon: <Info className="h-4 w-4 mr-2" /> },
   ];
 
   return (
@@ -44,7 +47,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
             <ChartLine className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl hidden sm:inline-block">TradeAnalytics Pro</span>
+            <span className="font-bold text-xl hidden sm:inline-block">{t("app.name")}</span>
           </Link>
         </div>
 
@@ -66,6 +69,7 @@ const Navbar = () => {
 
         {/* User Controls */}
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <Link to="/dashboard">
             <Button variant="ghost" size="icon" className="hidden sm:flex">
               <User className="h-5 w-5" />
@@ -74,7 +78,7 @@ const Navbar = () => {
           <Link to="/login">
             <Button variant="outline" size="sm" className="hidden sm:flex items-center gap-2">
               <LogIn className="h-4 w-4" />
-              Login
+              {t("app.login")}
             </Button>
           </Link>
 
@@ -104,15 +108,18 @@ const Navbar = () => {
                   <Link to="/dashboard" onClick={() => setIsSheetOpen(false)}>
                     <Button variant="outline" className="w-full justify-start mb-2">
                       <User className="h-4 w-4 mr-2" />
-                      Dashboard
+                      {t("app.dashboard")}
                     </Button>
                   </Link>
                   <Link to="/login" onClick={() => setIsSheetOpen(false)}>
                     <Button className="w-full justify-start">
                       <LogIn className="h-4 w-4 mr-2" />
-                      Login / Sign Up
+                      {t("app.login")} / {t("app.register")}
                     </Button>
                   </Link>
+                  <div className="mt-4">
+                    <LanguageSwitcher />
+                  </div>
                 </div>
               </div>
             </SheetContent>

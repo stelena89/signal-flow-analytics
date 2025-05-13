@@ -24,6 +24,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChartLine, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 // Login form schema
 const loginSchema = z.object({
@@ -45,6 +47,7 @@ const registerSchema = z.object({
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { t, language } = useLanguage();
   
   // Login form
   const loginForm = useForm<z.infer<typeof loginSchema>>({
@@ -83,23 +86,26 @@ const LoginPage = () => {
         <div className="mb-8 text-center">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
             <ChartLine className="h-8 w-8 text-primary" />
-            <span className="font-bold text-2xl">TradeAnalytics Pro</span>
+            <span className="font-bold text-2xl">{t("app.name")}</span>
           </Link>
+          <div className="absolute top-4 right-4">
+            <LanguageSwitcher />
+          </div>
         </div>
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="register">Register</TabsTrigger>
+            <TabsTrigger value="login">{t("app.login")}</TabsTrigger>
+            <TabsTrigger value="register">{t("app.register")}</TabsTrigger>
           </TabsList>
           
           {/* Login Form */}
           <TabsContent value="login">
             <Card>
               <CardHeader>
-                <CardTitle>Login to your account</CardTitle>
+                <CardTitle>{t("login.title")}</CardTitle>
                 <CardDescription>
-                  Enter your credentials to access your dashboard and signals.
+                  {t("login.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -110,7 +116,7 @@ const LoginPage = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("login.email")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -131,7 +137,7 @@ const LoginPage = () => {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t("login.password")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -161,7 +167,7 @@ const LoginPage = () => {
                       )}
                     />
                     <Button type="submit" className="w-full">
-                      Sign In
+                      {t("login.signin")}
                     </Button>
                   </form>
                 </Form>
@@ -169,13 +175,13 @@ const LoginPage = () => {
               <CardFooter className="flex flex-col gap-4">
                 <div className="text-sm text-center">
                   <Link to="/forgot-password" className="text-primary hover:underline">
-                    Forgot your password?
+                    {t("login.forgotPassword")}
                   </Link>
                 </div>
                 <div className="relative flex items-center justify-center">
                   <div className="absolute border-t w-full border-border"></div>
                   <span className="relative bg-card px-2 text-xs text-muted-foreground">
-                    OR CONTINUE WITH
+                    {t("login.orContinueWith")}
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 w-full">
@@ -203,9 +209,9 @@ const LoginPage = () => {
           <TabsContent value="register">
             <Card>
               <CardHeader>
-                <CardTitle>Create an account</CardTitle>
+                <CardTitle>{t("register.title")}</CardTitle>
                 <CardDescription>
-                  Join thousands of traders using our professional analysis.
+                  {t("register.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -216,7 +222,7 @@ const LoginPage = () => {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>{t("register.name")}</FormLabel>
                           <FormControl>
                             <Input placeholder="John Smith" {...field} />
                           </FormControl>
@@ -229,7 +235,7 @@ const LoginPage = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("register.email")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -250,7 +256,7 @@ const LoginPage = () => {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t("register.password")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -284,7 +290,7 @@ const LoginPage = () => {
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel>{t("register.confirmPassword")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -314,18 +320,18 @@ const LoginPage = () => {
                       )}
                     />
                     <div className="text-xs text-muted-foreground">
-                      By registering, you agree to our{" "}
+                      {t("register.termsText")}{" "}
                       <Link to="/terms" className="text-primary hover:underline">
-                        Terms of Service
+                        {t("register.termsLink")}
                       </Link>{" "}
-                      and{" "}
+                      {t("register.and")}{" "}
                       <Link to="/privacy" className="text-primary hover:underline">
-                        Privacy Policy
+                        {t("register.privacyLink")}
                       </Link>
                       .
                     </div>
                     <Button type="submit" className="w-full">
-                      Create Account
+                      {t("register.createAccount")}
                     </Button>
                   </form>
                 </Form>
@@ -334,7 +340,7 @@ const LoginPage = () => {
                 <div className="relative flex items-center justify-center">
                   <div className="absolute border-t w-full border-border"></div>
                   <span className="relative bg-card px-2 text-xs text-muted-foreground">
-                    OR REGISTER WITH
+                    {t("register.orRegisterWith")}
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 w-full">

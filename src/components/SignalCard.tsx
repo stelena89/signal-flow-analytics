@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface Signal {
   id: string;
@@ -22,6 +23,8 @@ interface SignalCardProps {
 }
 
 const SignalCard = ({ signal }: SignalCardProps) => {
+  const { t } = useLanguage();
+  
   const getStatusColor = (status: string) => {
     switch (status) {
       case "ACTIVE":
@@ -50,26 +53,26 @@ const SignalCard = ({ signal }: SignalCardProps) => {
             ) : (
               <TrendingDown className="h-3 w-3 mr-1" />
             )}
-            {signal.type}
+            {signal.type === "BUY" ? t("signals.buy") : t("signals.sell")}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="pb-2">
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="flex flex-col">
-            <span className="text-muted-foreground">Entry</span>
+            <span className="text-muted-foreground">{t("signal.entry")}</span>
             <span className="font-medium">{signal.entry}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-muted-foreground">Stop Loss</span>
+            <span className="text-muted-foreground">{t("signal.stopLoss")}</span>
             <span className="font-medium">{signal.stopLoss}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-muted-foreground">Take Profit</span>
+            <span className="text-muted-foreground">{t("signal.takeProfit")}</span>
             <span className="font-medium">{signal.takeProfit}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-muted-foreground">Timeframe</span>
+            <span className="text-muted-foreground">{t("signal.timeframe")}</span>
             <span className="font-medium">{signal.timeframe}</span>
           </div>
         </div>
@@ -82,7 +85,7 @@ const SignalCard = ({ signal }: SignalCardProps) => {
       </CardContent>
       <CardFooter className="pt-1">
         <Button variant="ghost" size="sm" className="w-full text-xs">
-          View Details <ArrowRight className="h-3 w-3 ml-1" />
+          {t("signal.viewDetails")} <ArrowRight className="h-3 w-3 ml-1" />
         </Button>
       </CardFooter>
     </Card>
