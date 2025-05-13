@@ -15,7 +15,6 @@ import {
   BarChart, 
   Save, 
   Copy, 
-  ChartLineUp,
   Settings,
   CandlestickChart,
   MessageCircle,

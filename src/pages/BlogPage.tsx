@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -181,12 +182,12 @@ const BlogPage = () => {
             </div>
           </div>
           <div className="md:col-span-2">
-            <Select value={categoryFilter || ""} onValueChange={(val) => setCategoryFilter(val === "" ? null : val)}>
+            <Select value={categoryFilter || "all"} onValueChange={(val) => setCategoryFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {uniqueCategories.map((category) => (
                   <SelectItem key={category} value={category}>{category}</SelectItem>
                 ))}
@@ -194,12 +195,12 @@ const BlogPage = () => {
             </Select>
           </div>
           <div className="md:col-span-2">
-            <Select value={typeFilter || ""} onValueChange={(val) => setTypeFilter(val === "" ? null : val)}>
+            <Select value={typeFilter || "all"} onValueChange={(val) => setTypeFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Content Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="article">Articles</SelectItem>
                 <SelectItem value="video">Videos</SelectItem>
               </SelectContent>

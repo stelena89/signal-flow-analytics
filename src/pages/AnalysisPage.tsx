@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -122,12 +123,12 @@ const AnalysisPage = () => {
             </div>
           </div>
           <div className="md:col-span-2">
-            <Select value={assetFilter || ""} onValueChange={(val) => setAssetFilter(val === "" ? null : val)}>
+            <Select value={assetFilter || "all"} onValueChange={(val) => setAssetFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Asset Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Assets</SelectItem>
+                <SelectItem value="all">All Assets</SelectItem>
                 <SelectItem value="forex">Forex</SelectItem>
                 <SelectItem value="crypto">Crypto</SelectItem>
                 <SelectItem value="stocks">Stocks</SelectItem>
@@ -136,12 +137,12 @@ const AnalysisPage = () => {
             </Select>
           </div>
           <div className="md:col-span-2">
-            <Select value={timeframeFilter || ""} onValueChange={(val) => setTimeframeFilter(val === "" ? null : val)}>
+            <Select value={timeframeFilter || "all"} onValueChange={(val) => setTimeframeFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Timeframe" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Timeframes</SelectItem>
+                <SelectItem value="all">All Timeframes</SelectItem>
                 {allTimeframes.map((tf) => (
                   <SelectItem key={tf} value={tf}>{tf}</SelectItem>
                 ))}
@@ -149,12 +150,12 @@ const AnalysisPage = () => {
             </Select>
           </div>
           <div className="md:col-span-2">
-            <Select value={tagFilter || ""} onValueChange={(val) => setTagFilter(val === "" ? null : val)}>
+            <Select value={tagFilter || "all"} onValueChange={(val) => setTagFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Analysis Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 {allTags.map((tag) => (
                   <SelectItem key={tag} value={tag}>{tag}</SelectItem>
                 ))}

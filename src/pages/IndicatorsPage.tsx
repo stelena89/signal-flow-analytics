@@ -199,12 +199,12 @@ const IndicatorsPage = () => {
             </div>
           </div>
           <div className="md:col-span-2">
-            <Select value={categoryFilter || ""} onValueChange={(val) => setCategoryFilter(val === "" ? null : val)}>
+            <Select value={categoryFilter || "all"} onValueChange={(val) => setCategoryFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {uniqueCategories.map((category) => (
                   <SelectItem key={category} value={category}>{category}</SelectItem>
                 ))}
@@ -212,12 +212,12 @@ const IndicatorsPage = () => {
             </Select>
           </div>
           <div className="md:col-span-2">
-            <Select value={timeframeFilter || ""} onValueChange={(val) => setTimeframeFilter(val === "" ? null : val)}>
+            <Select value={timeframeFilter || "all"} onValueChange={(val) => setTimeframeFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Timeframe" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Timeframes</SelectItem>
+                <SelectItem value="all">All Timeframes</SelectItem>
                 {allTimeframes.map((tf) => (
                   <SelectItem key={tf} value={tf}>{tf}</SelectItem>
                 ))}
@@ -225,12 +225,12 @@ const IndicatorsPage = () => {
             </Select>
           </div>
           <div className="md:col-span-2">
-            <Select value={priceFilter || ""} onValueChange={(val) => setPriceFilter(val === "" ? null : val)}>
+            <Select value={priceFilter || "all"} onValueChange={(val) => setPriceFilter(val === "all" ? null : val)}>
               <SelectTrigger>
                 <SelectValue placeholder="Price" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Prices</SelectItem>
+                <SelectItem value="all">All Prices</SelectItem>
                 <SelectItem value="free">Free Only</SelectItem>
                 <SelectItem value="paid">Premium Only</SelectItem>
               </SelectContent>
