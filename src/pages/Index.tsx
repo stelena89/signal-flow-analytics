@@ -2,7 +2,11 @@
 import HomePage from "./HomePage";
 
 const Index = () => {
-  return <HomePage />;
+  return (
+    <div className="gradient-bg">
+      <HomePage />
+    </div>
+  );
 };
 
 export default Index;

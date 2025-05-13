@@ -53,7 +53,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Trading specific colors
+				// Trading specific colors - updated for premium dark theme
 				up: "#0ECB81",
 				down: "#F6465D",
 				positive: "#0ECB81",
@@ -61,9 +61,11 @@ export default {
 				neutral: "#8A8F98",
 				gold: "#FFD700",
 				"gold-light": "#FFF4B8",
-				"chart-bg": "#0A0E17",
-				"card-bg": "#1A1F2C",
-				"sidebar-bg": "#151A27",
+				"premium-accent": "#03DAC5", // Teal/aqua accent
+				"premium-blue": "#3182CE", // Blue accent
+				"chart-bg": "#10141E", // Darker chart background
+				"card-bg": "#1A1F2C", // Card background
+				"sidebar-bg": "#0F1319", // Darker sidebar background
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -99,6 +101,10 @@ export default {
 					"0%, 100%": { transform: "translateY(0)" },
 					"50%": { transform: "translateY(-10px)" },
 				},
+				"card-hover": {
+					"0%": { transform: "translateY(0)" },
+					"100%": { transform: "translateY(-5px)" },
+				}
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -108,7 +114,13 @@ export default {
 				"slide-in": "slide-in 0.4s ease-out",
 				pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
 				float: "float 3s ease-in-out infinite",
+				"card-hover": "card-hover 0.2s ease-out",
 			},
+			boxShadow: {
+				'premium': '0 4px 20px rgba(3, 218, 197, 0.15)',
+				'gold': '0 4px 20px rgba(255, 215, 0, 0.15)',
+				'card': '0 8px 16px rgba(0, 0, 0, 0.2)',
+			}
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

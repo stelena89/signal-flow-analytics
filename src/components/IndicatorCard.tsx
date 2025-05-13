@@ -2,7 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartLine, Star } from "lucide-react";
+import { ChartLine, Star, Sparkle } from "lucide-react";
 
 export interface Indicator {
   id: string;
@@ -22,7 +22,7 @@ interface IndicatorCardProps {
 
 const IndicatorCard = ({ indicator }: IndicatorCardProps) => {
   return (
-    <Card className="hover-card overflow-hidden">
+    <Card className={`hover-card overflow-hidden transition-all duration-300 ${indicator.isPremium ? 'premium-card' : ''}`}>
       <div className="relative h-48 overflow-hidden bg-chart-bg">
         {indicator.image ? (
           <img 
@@ -36,14 +36,17 @@ const IndicatorCard = ({ indicator }: IndicatorCardProps) => {
           </div>
         )}
         {indicator.isPremium && (
-          <Badge className="premium-badge absolute top-2 right-2">
+          <Badge className="premium-badge absolute top-2 right-2 flex items-center gap-1">
+            <Sparkle className="h-3 w-3" />
             Premium
           </Badge>
         )}
       </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{indicator.name}</CardTitle>
+          <CardTitle className={`text-lg ${indicator.isPremium ? 'premium-text font-bold' : ''}`}>
+            {indicator.name}
+          </CardTitle>
           <div className="flex items-center">
             <Star className="h-4 w-4 text-gold fill-gold" />
             <span className="text-sm ml-1">{indicator.rating}</span>
@@ -63,10 +66,10 @@ const IndicatorCard = ({ indicator }: IndicatorCardProps) => {
         </p>
       </CardContent>
       <CardFooter className="flex justify-between items-center pt-1">
-        <span className="font-medium text-primary">
+        <span className={`font-medium ${indicator.isPremium ? 'text-gold' : 'text-primary'}`}>
           {indicator.price === 0 ? "Free" : `$${indicator.price}`}
         </span>
-        <Button size="sm">
+        <Button size="sm" className={indicator.isPremium ? 'bg-gradient-to-r from-premium-accent to-premium-blue hover:opacity-90' : ''}>
           {indicator.price === 0 ? "Download" : "Purchase"}
         </Button>
       </CardFooter>

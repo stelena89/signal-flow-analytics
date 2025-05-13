@@ -5,61 +5,31 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-    --positive: 142 76% 36%;
-    --negative: 0 84% 60%;
-    --neutral: 240 5% 64%;
-  }
-
-  .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
+    --primary: 172 80% 43%;
     --primary-foreground: 240 5.9% 10%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 52 100% 50%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --ring: 172 80% 43%;
+    --radius: 0.6rem;
     --positive: 142 70% 49%;
     --negative: 0 72% 51%;
     --neutral: 240 5% 64%;
   }
-}
- 
-@layer base {
-  * {
-    @apply border-border;
-  }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -83,9 +53,26 @@
   @apply bg-negative/20 text-negative flex items-center;
 }
 
-/* Hover effect for cards */
+/* Card and hover effects */
 .hover-card {
-  @apply transition-all duration-200 hover:shadow-md;
+  @apply transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
+}
+
+.premium-card {
+  @apply border border-premium-accent/20 bg-card-bg shadow-premium;
+}
+
+.gold-card {
+  @apply border border-gold/20 bg-card-bg shadow-gold;
+}
+
+.glass-card {
+  @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
+}
+
+/* Premium badge */
+.premium-badge {
+  @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
 }
 
 /* RTL specific fixes */
@@ -107,4 +94,39 @@
 [dir="rtl"] .ml-2 {
   margin-left: 0;
   margin-right: 0.5rem;
+}
+
+/* Gradient backgrounds */
+.gradient-bg {
+  @apply bg-gradient-to-br from-sidebar-bg via-background to-card-bg;
+}
+
+.hero-gradient {
+  @apply bg-gradient-to-br from-[#10141E] via-[#151A27] to-[#1A1F2C];
+}
+
+.premium-text {
+  @apply bg-gradient-to-r from-premium-accent to-gold bg-clip-text text-transparent;
+}
+
+/* Glow effects */
+.premium-glow {
+  box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
+}
+
+.gold-glow {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Additional animations */
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.hover-glow {
+  @apply transition-all duration-300 hover:premium-glow;
+}
+
+.hover-gold {
+  @apply transition-all duration-300 hover:gold-glow;
 }
