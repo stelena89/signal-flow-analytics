@@ -39,94 +39,106 @@
 /* Import Arabic fonts */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
 
-/* Apply Arabic font to Arabic text */
-.font-arabic {
-  font-family: 'Cairo', sans-serif;
+@layer components {
+  /* Apply Arabic font to Arabic text */
+  .font-arabic {
+    font-family: 'Cairo', sans-serif;
+  }
+
+  /* Custom classes for signal badges */
+  .signal-badge-buy {
+    @apply bg-positive/20 text-positive flex items-center;
+  }
+
+  .signal-badge-sell {
+    @apply bg-negative/20 text-negative flex items-center;
+  }
+
+  /* Card and hover effects */
+  .hover-card {
+    @apply transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
+  }
+
+  .premium-card {
+    @apply border border-premium-accent/20 bg-card-bg shadow-premium;
+  }
+
+  .gold-card {
+    @apply border border-gold/20 bg-card-bg shadow-gold;
+  }
+
+  .glass-card {
+    @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
+  }
+
+  /* Premium badge */
+  .premium-badge {
+    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
+  }
+
+  /* Premium text */
+  .premium-text {
+    @apply bg-gradient-to-r from-premium-accent to-gold bg-clip-text text-transparent;
+  }
+  
+  /* Gradient backgrounds */
+  .gradient-bg {
+    @apply bg-gradient-to-br from-sidebar-bg via-background to-card-bg;
+  }
+
+  .hero-gradient {
+    @apply bg-gradient-to-br from-[#10141E] via-[#151A27] to-[#1A1F2C];
+  }
 }
 
-/* Custom classes for signal badges */
-.signal-badge-buy {
-  @apply bg-positive/20 text-positive flex items-center;
-}
+@layer utilities {
+  /* RTL specific fixes */
+  [dir="rtl"] .mr-1 {
+    margin-right: 0;
+    margin-left: 0.25rem;
+  }
 
-.signal-badge-sell {
-  @apply bg-negative/20 text-negative flex items-center;
-}
+  [dir="rtl"] .mr-2 {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
 
-/* Card and hover effects */
-.hover-card {
-  @apply transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
-}
+  [dir="rtl"] .ml-1 {
+    margin-left: 0;
+    margin-right: 0.25rem;
+  }
 
-.premium-card {
-  @apply border border-premium-accent/20 bg-card-bg shadow-premium;
-}
+  [dir="rtl"] .ml-2 {
+    margin-left: 0;
+    margin-right: 0.5rem;
+  }
+  
+  /* Glow effects */
+  .premium-glow {
+    box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
+  }
 
-.gold-card {
-  @apply border border-gold/20 bg-card-bg shadow-gold;
-}
+  .gold-glow {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  }
 
-.glass-card {
-  @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
-}
-
-/* Premium badge */
-.premium-badge {
-  @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
-}
-
-/* RTL specific fixes */
-[dir="rtl"] .mr-1 {
-  margin-right: 0;
-  margin-left: 0.25rem;
-}
-
-[dir="rtl"] .mr-2 {
-  margin-right: 0;
-  margin-left: 0.5rem;
-}
-
-[dir="rtl"] .ml-1 {
-  margin-left: 0;
-  margin-right: 0.25rem;
-}
-
-[dir="rtl"] .ml-2 {
-  margin-left: 0;
-  margin-right: 0.5rem;
-}
-
-/* Gradient backgrounds */
-.gradient-bg {
-  @apply bg-gradient-to-br from-sidebar-bg via-background to-card-bg;
-}
-
-.hero-gradient {
-  @apply bg-gradient-to-br from-[#10141E] via-[#151A27] to-[#1A1F2C];
-}
-
-.premium-text {
-  @apply bg-gradient-to-r from-premium-accent to-gold bg-clip-text text-transparent;
-}
-
-/* Glow effects */
-.premium-glow {
-  box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
-}
-
-.gold-glow {
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-}
-
-/* Additional animations */
-.hover-lift {
-  @apply transition-transform duration-300 hover:-translate-y-1;
-}
-
-.hover-glow {
-  @apply transition-all duration-300 hover:premium-glow;
-}
-
-.hover-gold {
-  @apply transition-all duration-300 hover:gold-glow;
+  /* Additional animations */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+  
+  /* Fixed hover glow effects */
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
+  }
+  
+  .hover-gold {
+    @apply transition-all duration-300;
+  }
+  .hover-gold:hover {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  }
 }
