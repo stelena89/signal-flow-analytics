@@ -5,6 +5,33 @@
  
 @layer base {
   :root {
+    /* Light mode */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 172 80% 43%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 172 80% 43%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 172 80% 43%;
+    --radius: 0.6rem;
+    --positive: 142 70% 49%;
+    --negative: 0 72% 51%;
+    --neutral: 240 5% 64%;
+  }
+
+  .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -17,8 +44,8 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 52 100% 50%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 172 80% 43%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
@@ -63,24 +90,6 @@
     @apply border border-premium-accent/20 bg-card-bg shadow-premium;
   }
 
-  .gold-card {
-    @apply border border-gold/20 bg-card-bg shadow-gold;
-  }
-
-  .glass-card {
-    @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
-  }
-
-  /* Premium badge */
-  .premium-badge {
-    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
-  }
-
-  /* Premium text */
-  .premium-text {
-    @apply bg-gradient-to-r from-premium-accent to-gold bg-clip-text text-transparent;
-  }
-  
   /* Gradient backgrounds */
   .gradient-bg {
     @apply bg-gradient-to-br from-sidebar-bg via-background to-card-bg;
@@ -88,6 +97,21 @@
 
   .hero-gradient {
     @apply bg-gradient-to-br from-[#10141E] via-[#151A27] to-[#1A1F2C];
+  }
+
+  /* Premium text */
+  .premium-text {
+    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-transparent bg-clip-text;
+  }
+
+  /* Glass card */
+  .glass-card {
+    @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
+  }
+
+  /* Premium badge */
+  .premium-badge {
+    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
   }
 }
 
@@ -118,10 +142,6 @@
     box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
   }
 
-  .gold-glow {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-  }
-
   /* Additional animations */
   .hover-lift {
     @apply transition-transform duration-300 hover:-translate-y-1;
@@ -133,12 +153,5 @@
   }
   .hover-glow:hover {
     box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
-  }
-  
-  .hover-gold {
-    @apply transition-all duration-300;
-  }
-  .hover-gold:hover {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
   }
 }

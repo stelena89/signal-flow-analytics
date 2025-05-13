@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const location = useLocation();
@@ -69,6 +70,7 @@ const Navbar = () => {
 
         {/* User Controls */}
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <LanguageSwitcher />
           <Link to="/dashboard">
             <Button variant="ghost" size="icon" className="hidden sm:flex">
@@ -117,7 +119,8 @@ const Navbar = () => {
                       {t("app.login")} / {t("app.register")}
                     </Button>
                   </Link>
-                  <div className="mt-4">
+                  <div className="mt-4 flex gap-2">
+                    <ThemeToggle />
                     <LanguageSwitcher />
                   </div>
                 </div>

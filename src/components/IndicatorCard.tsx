@@ -48,7 +48,7 @@ const IndicatorCard = ({ indicator }: IndicatorCardProps) => {
             {indicator.name}
           </CardTitle>
           <div className="flex items-center">
-            <Star className="h-4 w-4 text-gold fill-gold" />
+            <Star className="h-4 w-4 text-accent fill-accent" />
             <span className="text-sm ml-1">{indicator.rating}</span>
           </div>
         </div>
@@ -66,7 +66,7 @@ const IndicatorCard = ({ indicator }: IndicatorCardProps) => {
         </p>
       </CardContent>
       <CardFooter className="flex justify-between items-center pt-1">
-        <span className={`font-medium ${indicator.isPremium ? 'text-gold' : 'text-primary'}`}>
+        <span className={`font-medium ${indicator.isPremium ? 'text-primary' : 'text-primary'}`}>
           {indicator.price === 0 ? "Free" : `$${indicator.price}`}
         </span>
         <Button size="sm" className={indicator.isPremium ? 'bg-gradient-to-r from-premium-accent to-premium-blue hover:opacity-90' : ''}>
