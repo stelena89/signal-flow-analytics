@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,6 +26,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChartLine, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useSignIn, useSignUp, useAuthStatus } from "@/hooks/use-auth";
+import { useEffect } from "react";
+import { toast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 // Login form schema
 const loginSchema = z.object({
@@ -48,7 +52,19 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
+  const { signIn, isLoading: isSigningIn } = useSignIn();
+  const { signUp, isLoading: isSigningUp } = useSignUp();
+  const { isAuthenticated } = useAuthStatus();
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
   
+  // Redirect already authenticated users
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   // Login form
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -69,15 +85,80 @@ const LoginPage = () => {
     },
   });
 
+  // Social login handlers
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsAuthLoading(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Google sign-in failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+      });
+    } finally {
+      setIsAuthLoading(false);
+    }
+  };
+
+  const handleFacebookSignIn = async () => {
+    try {
+      setIsAuthLoading(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "facebook",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Facebook sign-in failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+      });
+    } finally {
+      setIsAuthLoading(false);
+    }
+  };
+
   // Form submission handlers
-  function onLoginSubmit(values: z.infer<typeof loginSchema>) {
-    console.log("Login:", values);
-    // In a real app, this would call your authentication API
+  async function onLoginSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+      await signIn(values.email, values.password);
+    } catch (error) {
+      // Error is already handled in signIn function
+      console.error("Login error:", error);
+    }
   }
 
-  function onRegisterSubmit(values: z.infer<typeof registerSchema>) {
-    console.log("Register:", values);
-    // In a real app, this would call your registration API
+  async function onRegisterSubmit(values: z.infer<typeof registerSchema>) {
+    try {
+      await signUp(values.email, values.password, { 
+        full_name: values.name, 
+        username: values.email.split('@')[0] // Default username from email
+      });
+      
+      // Reset form after successful registration
+      registerForm.reset();
+      
+      // Switch to login tab
+      document.getElementById("login-tab")?.click();
+      
+    } catch (error) {
+      // Error is already handled in signUp function
+      console.error("Registration error:", error);
+    }
+  }
+
+  if (isAuthenticated) {
+    return null; // Will be redirected by useEffect
   }
 
   return (
@@ -95,7 +176,7 @@ const LoginPage = () => {
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="login">{t("app.login")}</TabsTrigger>
+            <TabsTrigger id="login-tab" value="login">{t("app.login")}</TabsTrigger>
             <TabsTrigger value="register">{t("app.register")}</TabsTrigger>
           </TabsList>
           
@@ -166,8 +247,12 @@ const LoginPage = () => {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full">
-                      {t("login.signin")}
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      disabled={isSigningIn || isAuthLoading}
+                    >
+                      {isSigningIn ? "Signing in..." : t("login.signin")}
                     </Button>
                   </form>
                 </Form>
@@ -185,7 +270,12 @@ const LoginPage = () => {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 w-full">
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleGoogleSignIn}
+                    disabled={isAuthLoading}
+                  >
                     <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                       <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -194,7 +284,12 @@ const LoginPage = () => {
                     </svg>
                     Google
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleFacebookSignIn}
+                    disabled={isAuthLoading}
+                  >
                     <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22 12c0-5.523-4.477-10-10-10s-10 4.477-10 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54v-2.891h2.54v-2.203c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.891h-2.33v6.988c4.781-.75 8.437-4.887 8.437-9.878z"></path>
                     </svg>
@@ -330,8 +425,12 @@ const LoginPage = () => {
                       </Link>
                       .
                     </div>
-                    <Button type="submit" className="w-full">
-                      {t("register.createAccount")}
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      disabled={isSigningUp || isAuthLoading}
+                    >
+                      {isSigningUp ? "Creating account..." : t("register.createAccount")}
                     </Button>
                   </form>
                 </Form>
@@ -344,7 +443,12 @@ const LoginPage = () => {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 w-full">
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleGoogleSignIn}
+                    disabled={isAuthLoading}
+                  >
                     <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                       <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -353,7 +457,12 @@ const LoginPage = () => {
                     </svg>
                     Google
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleFacebookSignIn}
+                    disabled={isAuthLoading}
+                  >
                     <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22 12c0-5.523-4.477-10-10-10s-10 4.477-10 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54v-2.891h2.54v-2.203c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.891h-2.33v6.988c4.781-.75 8.437-4.887 8.437-9.878z"></path>
                     </svg>
