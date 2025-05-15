@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +34,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Signal, fetchSignals } from "@/services/signalService";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const SignalsPage = () => {
   const { t } = useLanguage();
@@ -120,17 +121,22 @@ const SignalsPage = () => {
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{t("signals.title")}</h1>
+            <h1 className="text-3xl font-bold mb-2">Trading Signals</h1>
             <p className="text-muted-foreground">
-              {t("signals.description")}
+              Expert trading signals for forex, crypto, and more.
             </p>
           </div>
-          <Button className="mt-2 md:mt-0">
-            <Clock className="mr-2 h-4 w-4" />
-            {t("signals.subscribe")}
-          </Button>
+          
+          {session && (
+            <Link to="/signals/create">
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                New Signal
+              </Button>
+            </Link>
+          )}
         </div>
 
         <Tabs defaultValue="table" className="w-full mb-6">

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +25,8 @@ import { useQuery } from "@tanstack/react-query";
 import { BlogPost, fetchBlogPosts } from "@/services/blogService";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
 
 const BlogPage = () => {
   const { session } = useAuth();
@@ -86,10 +87,23 @@ const BlogPage = () => {
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Trading Education</h1>
-        <p className="text-muted-foreground mb-8">
-          Educational articles, videos, and strategy guides for traders of all levels.
-        </p>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Trading Education</h1>
+            <p className="text-muted-foreground">
+              Educational articles, videos, and strategy guides for traders of all levels.
+            </p>
+          </div>
+          
+          {session && (
+            <Link to="/blog/create">
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                New Blog Post
+              </Button>
+            </Link>
+          )}
+        </div>
 
         {/* Filters Section */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-10 gap-4">

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,8 @@ import { Analysis, fetchAnalyses } from "@/services/analysisService";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const AnalysisPage = () => {
   const { session } = useAuth();
@@ -86,10 +87,23 @@ const AnalysisPage = () => {
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Market Analysis</h1>
-        <p className="text-muted-foreground mb-6">
-          In-depth technical and fundamental analysis of major markets.
-        </p>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Market Analysis</h1>
+            <p className="text-muted-foreground">
+              In-depth technical and fundamental analysis of major markets.
+            </p>
+          </div>
+          
+          {session && (
+            <Link to="/analysis/create">
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                New Analysis
+              </Button>
+            </Link>
+          )}
+        </div>
 
         {/* Filters Section */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-12 gap-4">
