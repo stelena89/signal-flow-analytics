@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
         
       if (error) throw error;
-      setIsAdmin(!!data?.is_admin);
+      setIsAdmin(data?.is_admin || false);
     } catch (error) {
       console.error("Error checking user role:", error);
       setIsAdmin(false);
