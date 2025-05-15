@@ -74,6 +74,8 @@ export default function SignalForm() {
         timeframe: data.timeframe,
         status: data.status,
         user_id: user.id,
+        date: new Date().toISOString(),
+        pips: null,
       };
 
       const result = await createSignal(signalData);

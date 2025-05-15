@@ -96,6 +96,8 @@ export default function BlogPostForm() {
         tags: tagsArray,
         author: user.email || "Anonymous",
         user_id: user.id,
+        date: new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
+        image: null, // Add the missing field
       };
 
       const result = await createBlogPost(blogData);
