@@ -20,6 +20,7 @@ import CreateBlogPostPage from "./pages/CreateBlogPostPage";
 import CreateSignalPage from "./pages/CreateSignalPage";
 import ProfilePage from './pages/ProfilePage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
+import Layout from './components/Layout';
 
 const App = () => {
   return (
@@ -27,17 +28,17 @@ const App = () => {
       <AuthProvider>
         <LanguageProvider>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/signals" element={<SignalsPage />} />
-            <Route path="/analysis" element={<AnalysisPage />} />
-            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/" element={<Layout><HomePage /></Layout>} />
+            <Route path="/signals" element={<Layout><SignalsPage /></Layout>} />
+            <Route path="/analysis" element={<Layout><AnalysisPage /></Layout>} />
+            <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
-            <Route path="/analysis/create" element={<CreateAnalysisPage />} />
-            <Route path="/blog/create" element={<CreateBlogPostPage />} />
-            <Route path="/signals/create" element={<CreateSignalPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="/analysis/create" element={<Layout><CreateAnalysisPage /></Layout>} />
+            <Route path="/blog/create" element={<Layout><CreateBlogPostPage /></Layout>} />
+            <Route path="/signals/create" element={<Layout><CreateSignalPage /></Layout>} />
+            <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
           </Routes>
         </LanguageProvider>
       </AuthProvider>
