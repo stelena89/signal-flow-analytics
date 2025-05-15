@@ -6,9 +6,9 @@ import { AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function CreateBlogPostPage() {
-  const { session, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
 
-  if (!session) {
+  if (!user) {
     return (
       <div className="py-8 px-4 text-center">
         <h1 className="text-3xl font-bold mb-4">Create Blog Post</h1>

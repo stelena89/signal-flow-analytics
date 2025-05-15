@@ -39,7 +39,7 @@ import { Link } from "react-router-dom";
 
 const SignalsPage = () => {
   const { t } = useLanguage();
-  const { session } = useAuth();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [assetFilter, setAssetFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
@@ -51,7 +51,7 @@ const SignalsPage = () => {
   const { data: signals = [], isLoading, error } = useQuery({
     queryKey: ["signals"],
     queryFn: fetchSignals,
-    enabled: !!session
+    enabled: !!user
   });
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const SignalsPage = () => {
     setSelectedSignal(signal);
   };
 
-  if (!session) {
+  if (!user) {
     return (
       <div className="py-8 px-4 text-center">
         <h1 className="text-3xl font-bold mb-4">{t("signals.title")}</h1>
@@ -129,7 +129,7 @@ const SignalsPage = () => {
             </p>
           </div>
           
-          {session && (
+          {user && (
             <Link to="/signals/create">
               <Button>
                 <Plus className="mr-2 h-4 w-4" />

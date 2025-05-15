@@ -22,10 +22,11 @@ export const useProfile = () => {
 };
 
 export const useAuthStatus = () => {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, session } = useAuth();
   return {
     isAuthenticated: !!user,
     isLoading,
-    user
+    user,
+    session
   };
 };

@@ -29,7 +29,7 @@ import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 
 const BlogPage = () => {
-  const { session } = useAuth();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
@@ -39,7 +39,7 @@ const BlogPage = () => {
   const { data: blogPosts = [], isLoading, error } = useQuery({
     queryKey: ["blogPosts"],
     queryFn: fetchBlogPosts,
-    enabled: !!session
+    enabled: !!user
   });
 
   useEffect(() => {
@@ -72,13 +72,13 @@ const BlogPage = () => {
     return matchesSearch && matchesCategory && matchesType;
   });
 
-  if (!session) {
+  if (!user) {
     return (
       <div className="py-8 px-4 text-center">
         <h1 className="text-3xl font-bold mb-4">Trading Education</h1>
         <p className="mb-4">Please log in to view educational content.</p>
         <Button asChild>
-          <a href="/login">Login</a>
+          <Link to="/login">Login</Link>
         </Button>
       </div>
     );
@@ -95,7 +95,7 @@ const BlogPage = () => {
             </p>
           </div>
           
-          {session && (
+          {user && (
             <Link to="/blog/create">
               <Button>
                 <Plus className="mr-2 h-4 w-4" />

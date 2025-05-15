@@ -2,37 +2,43 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { supabase } from '../integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { Session, User } from '@supabase/supabase-js';
 
 type AuthContextType = {
-  user: any | null;
-  loading: boolean;
+  user: User | null;
+  session: Session | null;
+  isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  updateProfile?: (data: any) => Promise<void>;
   isAdmin: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
-        const { data: { user: currentUser } } = await supabase.auth.getUser();
-        setUser(currentUser);
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        setSession(currentSession);
+        setUser(currentSession?.user || null);
         
         // Check if user is admin only if there's a user logged in
-        if (currentUser) {
-          await checkUserRole(currentUser.id);
+        if (currentSession?.user) {
+          await checkUserRole(currentSession.user.id);
         }
       } catch (error) {
         console.error("Error getting user:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -56,14 +62,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-      if (session?.user) {
-        checkUserRole(session.user.id);
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+      setUser(newSession?.user || null);
+      if (newSession?.user) {
+        checkUserRole(newSession.user.id);
       } else {
         setIsAdmin(false);
       }
-      setLoading(false);
+      setIsLoading(false);
     });
 
     getCurrentUser();
@@ -80,6 +87,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const signUp = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+    } catch (error: any) {
+      throw new Error(error.message || "Error signing up");
+    }
+  };
+
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -90,8 +106,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateProfile = async (data: any) => {
+    try {
+      if (!user) throw new Error("User not authenticated");
+      
+      const { error } = await supabase
+        .from('profiles')
+        .update(data)
+        .eq('id', user.id);
+      
+      if (error) throw error;
+    } catch (error: any) {
+      throw new Error(error.message || "Error updating profile");
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOut, isAdmin }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      isLoading, 
+      signIn, 
+      signUp,
+      signOut, 
+      updateProfile,
+      isAdmin 
+    }}>
       {children}
     </AuthContext.Provider>
   );
