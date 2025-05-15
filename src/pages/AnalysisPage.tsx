@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,68 +15,38 @@ import {
 } from "@/components/ui/select";
 import { CalendarIcon, Clock, Filter, Search, Tag } from "lucide-react";
 import { BarChart } from "lucide-react";
-
-interface Analysis {
-  id: string;
-  title: string;
-  summary: string;
-  content: string;
-  pair: string;
-  date: string;
-  author: string;
-  tags: string[];
-  assetType: "forex" | "crypto" | "stocks" | "commodities";
-  timeframe: string;
-}
-
-const sampleAnalysis: Analysis[] = [
-  {
-    id: "1",
-    title: "EUR/USD Consolidation Breakout Expected",
-    summary: "EUR/USD has been consolidating in a tight range but key technical indicators suggest an imminent breakout.",
-    content: "The EUR/USD pair has been trading within a 100-pip range for the past two weeks, forming a symmetrical triangle pattern on the daily chart. The RSI is trending upward while price maintains the range, indicating potential bullish divergence. Key support remains at 1.0850 with resistance at 1.0950. A break above resistance with increased volume would target the 1.1050 level.",
-    pair: "EUR/USD",
-    date: "2023-05-12",
-    author: "John Smith",
-    tags: ["Technical", "Breakout", "Pattern"],
-    assetType: "forex",
-    timeframe: "Daily"
-  },
-  {
-    id: "2",
-    title: "Bitcoin Approaching Key Support Level",
-    summary: "BTC is testing a major support zone with confluence of multiple technical factors.",
-    content: "Bitcoin is approaching the critical support level at $42,500, which aligns with the 200-day moving average and a major trendline dating back to the October 2022 low. Volume has been declining during the recent pullback, suggesting a potential exhaustion of selling pressure. The weekly RSI has not yet reached oversold territory, indicating there could be more downside if support breaks. Key levels to watch: $42,500 support and $46,800 resistance.",
-    pair: "BTC/USD",
-    date: "2023-05-14",
-    author: "Sarah Johnson",
-    tags: ["Technical", "Support", "Cryptocurrency"],
-    assetType: "crypto",
-    timeframe: "Weekly"
-  },
-  {
-    id: "3",
-    title: "Gold Setting Up for Potential Bullish Run",
-    summary: "Fundamental factors and technical setup align for a possible gold rally.",
-    content: "Gold has been forming a cup and handle pattern on the daily chart, typically a bullish continuation pattern. With recent inflation data coming in higher than expected and central banks signaling a more dovish stance, gold could benefit from safe-haven flows. The metal has been holding above the $1,950 support zone with increasing volume on up days. Watch for a breakthrough $2,000 which could trigger a run toward previous all-time highs.",
-    pair: "GOLD",
-    date: "2023-05-10",
-    author: "Michael Lee",
-    tags: ["Technical", "Fundamental", "Commodities"],
-    assetType: "commodities",
-    timeframe: "Daily"
-  }
-];
+import { Analysis, fetchAnalyses } from "@/services/analysisService";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const AnalysisPage = () => {
+  const { session } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [assetFilter, setAssetFilter] = useState<string | null>(null);
   const [timeframeFilter, setTimeframeFilter] = useState<string | null>(null);
   const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [selectedAnalysis, setSelectedAnalysis] = useState<Analysis | null>(null);
 
+  // Fetch analyses from Supabase
+  const { data: analyses = [], isLoading, error } = useQuery({
+    queryKey: ["analyses"],
+    queryFn: fetchAnalyses,
+    enabled: !!session
+  });
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error loading analyses",
+        description: "There was a problem fetching the market analyses. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [error]);
+
   // Filter analysis based on search term and filters
-  const filteredAnalysis = sampleAnalysis.filter((analysis) => {
+  const filteredAnalysis = analyses.filter((analysis) => {
     const matchesSearch = 
       searchTerm === "" || 
       analysis.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -84,22 +54,34 @@ const AnalysisPage = () => {
       analysis.summary.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesAsset = 
-      assetFilter === null || analysis.assetType === assetFilter;
+      assetFilter === null || analysis.asset_type === assetFilter;
     
     const matchesTimeframe = 
       timeframeFilter === null || analysis.timeframe === timeframeFilter;
     
     const matchesTag = 
-      tagFilter === null || analysis.tags.includes(tagFilter);
+      tagFilter === null || (analysis.tags && analysis.tags.includes(tagFilter));
     
     return matchesSearch && matchesAsset && matchesTimeframe && matchesTag;
   });
 
   // Get unique tags for filter
-  const allTags = Array.from(new Set(sampleAnalysis.flatMap(a => a.tags)));
+  const allTags = Array.from(new Set(analyses.flatMap(a => a.tags || [])));
   
   // Get unique timeframes for filter
-  const allTimeframes = Array.from(new Set(sampleAnalysis.map(a => a.timeframe)));
+  const allTimeframes = Array.from(new Set(analyses.map(a => a.timeframe)));
+
+  if (!session) {
+    return (
+      <div className="py-8 px-4 text-center">
+        <h1 className="text-3xl font-bold mb-4">Market Analysis</h1>
+        <p className="mb-4">Please log in to view market analyses.</p>
+        <Button asChild>
+          <a href="/login">Login</a>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="py-8 px-4">
@@ -178,7 +160,11 @@ const AnalysisPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Analysis List */}
           <div className="md:col-span-1 space-y-4">
-            {filteredAnalysis.length > 0 ? (
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center h-48">
+                <p className="text-muted-foreground">Loading analyses...</p>
+              </div>
+            ) : filteredAnalysis.length > 0 ? (
               filteredAnalysis.map((analysis) => (
                 <Card 
                   key={analysis.id} 
@@ -202,7 +188,7 @@ const AnalysisPage = () => {
                     </p>
                   </CardContent>
                   <CardFooter className="pt-0 flex gap-1 flex-wrap">
-                    {analysis.tags.map((tag) => (
+                    {analysis.tags && analysis.tags.map((tag) => (
                       <Badge key={tag} variant="outline" className="text-xs">
                         {tag}
                       </Badge>
@@ -234,14 +220,14 @@ const AnalysisPage = () => {
                   <div className="flex flex-wrap items-center text-sm text-muted-foreground gap-3 mb-4">
                     <div className="flex items-center">
                       <CalendarIcon className="h-4 w-4 mr-1" />
-                      {selectedAnalysis.date}
+                      {new Date(selectedAnalysis.date).toLocaleDateString()}
                     </div>
                     <div>
                       by {selectedAnalysis.author}
                     </div>
                     <div className="flex items-center">
                       <Tag className="h-4 w-4 mr-1" />
-                      {selectedAnalysis.assetType.charAt(0).toUpperCase() + selectedAnalysis.assetType.slice(1)}
+                      {selectedAnalysis.asset_type.charAt(0).toUpperCase() + selectedAnalysis.asset_type.slice(1)}
                     </div>
                   </div>
                   
@@ -253,9 +239,9 @@ const AnalysisPage = () => {
                     <TabsContent value="chart" className="mt-0">
                       <TradingViewWidget
                         symbol={
-                          selectedAnalysis.assetType === "forex" 
+                          selectedAnalysis.asset_type === "forex" 
                             ? `FX:${selectedAnalysis.pair.replace('/', '')}`
-                            : selectedAnalysis.assetType === "crypto"
+                            : selectedAnalysis.asset_type === "crypto"
                               ? `BITSTAMP:${selectedAnalysis.pair.replace('/', '')}`
                               : selectedAnalysis.pair
                         }

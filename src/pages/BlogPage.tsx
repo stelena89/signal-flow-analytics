@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,123 +22,34 @@ import {
   Clock,
   BarChart
 } from "lucide-react";
-
-// Sample blog posts data
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content?: string;
-  author: string;
-  date: string;
-  image?: string;
-  category: string;
-  tags: string[];
-  type: "article" | "video";
-  videoUrl?: string;
-  readTime?: string;
-}
-
-const blogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "Understanding Smart Money Concepts in Trading",
-    excerpt: "Learn how to identify institutional order flow and market manipulation patterns to trade with the 'smart money'.",
-    content: "Smart Money Concepts (SMC) is a methodology in trading that focuses on identifying institutional order flow and market manipulation patterns. The goal is to trade alongside professional traders and financial institutions, by spotting their footprints on the chart and anticipating their moves. In this article, we'll explore the key elements of SMC, including liquidity grabs, order blocks, fair value gaps, and market structure shifts.",
-    author: "John Smith",
-    date: "2023-05-12",
-    category: "Technical Analysis",
-    tags: ["Smart Money", "Price Action", "Market Structure"],
-    type: "article",
-    readTime: "8 min read"
-  },
-  {
-    id: "2",
-    title: "Advanced Supply and Demand Zones Trading",
-    excerpt: "Master the art of identifying and trading key supply and demand zones for consistent trading profits.",
-    content: "Supply and demand zones represent areas where institutional players' orders were filled, and provide optimal entry and exit points for retail traders. This article dives into methods for accurately identifying these zones, filtering them for quality, and developing trading strategies based on them.",
-    author: "Sarah Johnson",
-    date: "2023-05-14",
-    category: "Strategy",
-    tags: ["Supply and Demand", "Zone Trading", "Price Action"],
-    type: "article",
-    readTime: "12 min read"
-  },
-  {
-    id: "3",
-    title: "Risk Management: The Key to Trading Success",
-    excerpt: "Discover why proper risk management is far more important than entry signals for long-term trading profitability.",
-    author: "Michael Lee",
-    date: "2023-05-10",
-    category: "Risk Management",
-    tags: ["Position Sizing", "Psychology", "Money Management"],
-    type: "article",
-    readTime: "6 min read"
-  },
-  {
-    id: "4",
-    title: "Wyckoff Method: A Complete Guide for Modern Traders",
-    excerpt: "Learn how to apply the century-old Wyckoff Method to today's markets for effective analysis and trading.",
-    author: "Robert Williams",
-    date: "2023-05-08",
-    category: "Technical Analysis",
-    tags: ["Wyckoff", "Accumulation", "Distribution"],
-    type: "article",
-    readTime: "15 min read"
-  },
-  {
-    id: "5",
-    title: "Market Analysis 101: The Ultimate Guide for Beginners",
-    excerpt: "A step-by-step walkthrough of the fundamental and technical analysis process for new traders.",
-    author: "Jennifer Davis",
-    date: "2023-05-06",
-    category: "Education",
-    tags: ["Beginners", "Analysis", "Fundamentals"],
-    type: "video",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    readTime: "Video: 22 min"
-  },
-  {
-    id: "6",
-    title: "Trading Psychology: Overcoming Fear and Greed",
-    excerpt: "Learn practical techniques to manage emotions and develop the mindset of successful traders.",
-    author: "David Chen",
-    date: "2023-05-04",
-    category: "Psychology",
-    tags: ["Mindset", "Discipline", "Emotions"],
-    type: "video",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    readTime: "Video: 18 min"
-  },
-  {
-    id: "7",
-    title: "Fibonacci Trading: Advanced Techniques and Strategies",
-    excerpt: "Take your Fibonacci analysis to the next level with these professional trading techniques.",
-    author: "Jessica Brown",
-    date: "2023-05-02",
-    category: "Technical Analysis",
-    tags: ["Fibonacci", "Extensions", "Retracements"],
-    type: "article",
-    readTime: "10 min read"
-  },
-  {
-    id: "8",
-    title: "Algorithmic Trading for Retail Traders",
-    excerpt: "How to implement simple trading algorithms without advanced programming knowledge.",
-    author: "Thomas Wilson",
-    date: "2023-04-30",
-    category: "Technology",
-    tags: ["Automation", "Algorithms", "Programming"],
-    type: "article",
-    readTime: "11 min read"
-  }
-];
+import { useQuery } from "@tanstack/react-query";
+import { BlogPost, fetchBlogPosts } from "@/services/blogService";
+import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const BlogPage = () => {
+  const { session } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+
+  // Fetch blog posts from Supabase
+  const { data: blogPosts = [], isLoading, error } = useQuery({
+    queryKey: ["blogPosts"],
+    queryFn: fetchBlogPosts,
+    enabled: !!session
+  });
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error loading blog posts",
+        description: "There was a problem fetching the blog posts. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [error]);
 
   // Extract unique categories for filter
   const uniqueCategories = Array.from(new Set(blogPosts.map(p => p.category)));
@@ -159,6 +70,18 @@ const BlogPage = () => {
     
     return matchesSearch && matchesCategory && matchesType;
   });
+
+  if (!session) {
+    return (
+      <div className="py-8 px-4 text-center">
+        <h1 className="text-3xl font-bold mb-4">Trading Education</h1>
+        <p className="mb-4">Please log in to view educational content.</p>
+        <Button asChild>
+          <a href="/login">Login</a>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="py-8 px-4">
@@ -229,7 +152,11 @@ const BlogPage = () => {
               </TabsList>
             </Tabs>
 
-            {filteredPosts.length > 0 ? (
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center h-48">
+                <p className="text-muted-foreground">Loading content...</p>
+              </div>
+            ) : filteredPosts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredPosts.map((post) => (
                   <Card 
@@ -258,10 +185,10 @@ const BlogPage = () => {
                       <div className="flex justify-between items-center w-full">
                         <div className="flex items-center text-xs text-muted-foreground">
                           <Calendar className="h-3 w-3 mr-1" />
-                          {post.date}
+                          {new Date(post.date).toLocaleDateString()}
                           <span className="mx-2">•</span>
                           <Clock className="h-3 w-3 mr-1" />
-                          {post.readTime}
+                          {post.read_time || "5 min read"}
                         </div>
                         <Badge variant="outline">{post.category}</Badge>
                       </div>
@@ -302,7 +229,7 @@ const BlogPage = () => {
                     <span>By {selectedPost.author}</span>
                     <span className="mx-2">•</span>
                     <Calendar className="h-3 w-3 mr-1" />
-                    <span>{selectedPost.date}</span>
+                    <span>{new Date(selectedPost.date).toLocaleDateString()}</span>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -311,7 +238,7 @@ const BlogPage = () => {
                       <iframe 
                         width="100%" 
                         height="100%" 
-                        src={selectedPost.videoUrl} 
+                        src={selectedPost.video_url || ""} 
                         title={selectedPost.title}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -324,7 +251,7 @@ const BlogPage = () => {
                   )}
                   
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {selectedPost.tags.map((tag) => (
+                    {selectedPost.tags && selectedPost.tags.map((tag) => (
                       <Badge key={tag} variant="outline">{tag}</Badge>
                     ))}
                   </div>
@@ -380,7 +307,7 @@ const BlogPage = () => {
                       </div>
                       <div>
                         <h4 className="text-sm font-medium line-clamp-2">{video.title}</h4>
-                        <p className="text-xs text-muted-foreground mt-1">{video.readTime}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{video.read_time || "Video"}</p>
                       </div>
                     </div>
                   ))}

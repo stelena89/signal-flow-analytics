@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -23,111 +23,45 @@ import {
   TrendingUp, 
   TrendingDown, 
   Filter, 
-  Download,
   Calendar,
   Clock,
   ChartLine
 } from "lucide-react";
-import { Signal } from "@/components/SignalCard";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-// Sample signals data
-const sampleSignals: Signal[] = [
-  {
-    id: "1",
-    pair: "EUR/USD",
-    type: "BUY",
-    entry: "1.0925",
-    stopLoss: "1.0885",
-    takeProfit: "1.0985",
-    timeframe: "4H",
-    date: "2023-05-12 14:30",
-    status: "TP HIT",
-    pips: 60
-  },
-  {
-    id: "2",
-    pair: "BTC/USD",
-    type: "SELL",
-    entry: "43250",
-    stopLoss: "43750",
-    takeProfit: "42250",
-    timeframe: "1D",
-    date: "2023-05-14 09:15",
-    status: "ACTIVE",
-  },
-  {
-    id: "3",
-    pair: "GBP/JPY",
-    type: "BUY",
-    entry: "168.50",
-    stopLoss: "167.80",
-    takeProfit: "169.50",
-    timeframe: "1H",
-    date: "2023-05-13 11:45",
-    status: "SL HIT",
-    pips: -70
-  },
-  {
-    id: "4",
-    pair: "XAU/USD",
-    type: "BUY",
-    entry: "1950.20",
-    stopLoss: "1935.50",
-    takeProfit: "1980.00",
-    timeframe: "4H",
-    date: "2023-05-11 10:20",
-    status: "TP HIT",
-    pips: 298
-  },
-  {
-    id: "5",
-    pair: "ETH/USD",
-    type: "BUY",
-    entry: "2150.00",
-    stopLoss: "2100.00",
-    takeProfit: "2250.00",
-    timeframe: "4H",
-    date: "2023-05-10 15:40",
-    status: "CLOSED",
-    pips: 35
-  },
-  {
-    id: "6",
-    pair: "USD/JPY",
-    type: "SELL",
-    entry: "134.25",
-    stopLoss: "134.75",
-    takeProfit: "133.25",
-    timeframe: "1H",
-    date: "2023-05-09 08:15",
-    status: "TP HIT",
-    pips: 100
-  },
-  {
-    id: "7",
-    pair: "AUD/USD",
-    type: "SELL",
-    entry: "0.6680",
-    stopLoss: "0.6720",
-    takeProfit: "0.6600",
-    timeframe: "1D",
-    date: "2023-05-08 22:30",
-    status: "ACTIVE",
-  }
-];
+import { useQuery } from "@tanstack/react-query";
+import { Signal, fetchSignals } from "@/services/signalService";
+import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SignalsPage = () => {
   const { t } = useLanguage();
+  const { session } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [assetFilter, setAssetFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [timeframeFilter, setTimeframeFilter] = useState<string | null>(null);
   const [directionFilter, setDirectionFilter] = useState<string | null>(null);
   const [selectedSignal, setSelectedSignal] = useState<Signal | null>(null);
+
+  // Fetch signals from Supabase
+  const { data: signals = [], isLoading, error } = useQuery({
+    queryKey: ["signals"],
+    queryFn: fetchSignals,
+    enabled: !!session
+  });
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error loading signals",
+        description: "There was a problem fetching the trading signals. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [error]);
 
   // Determine asset type based on pair
   const getAssetType = (pair: string): string => {
@@ -143,7 +77,7 @@ const SignalsPage = () => {
   };
 
   // Filter signals based on search term and filters
-  const filteredSignals = sampleSignals.filter((signal) => {
+  const filteredSignals = signals.filter((signal) => {
     const matchesSearch = 
       searchTerm === "" || 
       signal.pair.toLowerCase().includes(searchTerm.toLowerCase());
@@ -164,12 +98,24 @@ const SignalsPage = () => {
   });
 
   // Extract unique timeframes, statuses for filters
-  const uniqueTimeframes = Array.from(new Set(sampleSignals.map(s => s.timeframe)));
-  const uniqueStatuses = Array.from(new Set(sampleSignals.map(s => s.status)));
+  const uniqueTimeframes = Array.from(new Set(signals.map(s => s.timeframe)));
+  const uniqueStatuses = Array.from(new Set(signals.map(s => s.status)));
 
   const handleRowClick = (signal: Signal) => {
     setSelectedSignal(signal);
   };
+
+  if (!session) {
+    return (
+      <div className="py-8 px-4 text-center">
+        <h1 className="text-3xl font-bold mb-4">{t("signals.title")}</h1>
+        <p className="mb-4">Please log in to view trading signals.</p>
+        <Button asChild>
+          <a href="/login">Login</a>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="py-8 px-4">
@@ -284,7 +230,13 @@ const SignalsPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredSignals.length > 0 ? (
+                  {isLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={9} className="text-center h-24">
+                        <p className="text-muted-foreground">Loading signals...</p>
+                      </TableCell>
+                    </TableRow>
+                  ) : filteredSignals.length > 0 ? (
                     filteredSignals.map((signal) => (
                       <TableRow 
                         key={signal.id} 
@@ -305,10 +257,10 @@ const SignalsPage = () => {
                           </Badge>
                         </TableCell>
                         <TableCell>{signal.entry}</TableCell>
-                        <TableCell className="text-negative">{signal.stopLoss}</TableCell>
-                        <TableCell className="text-positive">{signal.takeProfit}</TableCell>
+                        <TableCell className="text-negative">{signal.stop_loss}</TableCell>
+                        <TableCell className="text-positive">{signal.take_profit}</TableCell>
                         <TableCell>{signal.timeframe}</TableCell>
-                        <TableCell>{signal.date}</TableCell>
+                        <TableCell>{new Date(signal.date).toLocaleString()}</TableCell>
                         <TableCell>
                           <Badge
                             className={
@@ -322,7 +274,7 @@ const SignalsPage = () => {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          {signal.pips !== undefined && (
+                          {signal.pips !== undefined && signal.pips !== null && (
                             <span className={signal.pips >= 0 ? "text-positive" : "text-negative"}>
                               {signal.pips >= 0 ? "+" : ""}{signal.pips} pips
                             </span>
@@ -405,11 +357,11 @@ const SignalsPage = () => {
                         </div>
                         <div>
                           <p className="text-muted-foreground text-sm">{t("signal.stopLoss")}</p>
-                          <p className="font-medium text-negative">{selectedSignal.stopLoss}</p>
+                          <p className="font-medium text-negative">{selectedSignal.stop_loss}</p>
                         </div>
                         <div>
                           <p className="text-muted-foreground text-sm">{t("signal.takeProfit")}</p>
-                          <p className="font-medium text-positive">{selectedSignal.takeProfit}</p>
+                          <p className="font-medium text-positive">{selectedSignal.take_profit}</p>
                         </div>
                         <div>
                           <p className="text-muted-foreground text-sm">{t("signal.timeframe")}</p>
@@ -419,7 +371,7 @@ const SignalsPage = () => {
                       
                       <div className="pt-2 border-t border-border">
                         <p className="text-muted-foreground text-sm">{t("signal.date")}</p>
-                        <p className="font-medium">{selectedSignal.date}</p>
+                        <p className="font-medium">{new Date(selectedSignal.date).toLocaleString()}</p>
                       </div>
                       
                       <div className="pt-2 border-t border-border">
@@ -436,7 +388,7 @@ const SignalsPage = () => {
                         </Badge>
                       </div>
                       
-                      {selectedSignal.pips !== undefined && (
+                      {selectedSignal.pips !== undefined && selectedSignal.pips !== null && (
                         <div className="pt-2 border-t border-border">
                           <p className="text-muted-foreground text-sm">{t("signal.result")}</p>
                           <p className={selectedSignal.pips >= 0 ? "font-medium text-positive" : "font-medium text-negative"}>
