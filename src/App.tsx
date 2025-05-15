@@ -14,6 +14,7 @@ import BlogPage from './pages/BlogPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import CreateAnalysisPage from "./pages/CreateAnalysisPage";
 import CreateBlogPostPage from "./pages/CreateBlogPostPage";
 import CreateSignalPage from "./pages/CreateSignalPage";
@@ -24,19 +25,21 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signals" element={<SignalsPage />} />
-          <Route path="/analysis" element={<AnalysisPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/auth/callback" element={<AuthCallbackPage />} />
-          <Route path="/analysis/create" element={<CreateAnalysisPage />} />
-          <Route path="/blog/create" element={<CreateBlogPostPage />} />
-          <Route path="/signals/create" element={<CreateSignalPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <LanguageProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signals" element={<SignalsPage />} />
+            <Route path="/analysis" element={<AnalysisPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            <Route path="/analysis/create" element={<CreateAnalysisPage />} />
+            <Route path="/blog/create" element={<CreateBlogPostPage />} />
+            <Route path="/signals/create" element={<CreateSignalPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </LanguageProvider>
       </AuthProvider>
     </Router>
   );
