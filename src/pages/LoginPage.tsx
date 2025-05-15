@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -140,10 +139,25 @@ const LoginPage = () => {
 
   async function onRegisterSubmit(values: z.infer<typeof registerSchema>) {
     try {
-      await signUp(values.email, values.password, { 
-        full_name: values.name, 
-        username: values.email.split('@')[0] // Default username from email
-      });
+      // Updated to match the proper signUp function signature in AuthContext
+      await signUp(values.email, values.password);
+      
+      // After successful sign-up, update the user profile with additional information
+      try {
+        // Create a profile for the user with additional details
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('profiles').upsert({
+            id: user.id,
+            full_name: values.name,
+            username: values.email.split('@')[0], // Default username from email
+            updated_at: new Date().toISOString(),
+          });
+        }
+      } catch (profileError) {
+        console.error("Error updating profile:", profileError);
+        // Don't throw here to prevent interrupting the sign-up flow
+      }
       
       // Reset form after successful registration
       registerForm.reset();
