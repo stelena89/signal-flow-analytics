@@ -22,6 +22,9 @@ import CreateSignalPage from "./pages/CreateSignalPage";
 import ProfilePage from './pages/ProfilePage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import Layout from './components/Layout';
+import AboutPage from './pages/AboutPage';
+import ChartsPage from './pages/ChartsPage';
+import IndicatorsPage from './pages/IndicatorsPage';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -43,6 +46,9 @@ const App = () => {
               <Route path="/analysis/create" element={<Layout><CreateAnalysisPage /></Layout>} />
               <Route path="/blog/create" element={<Layout><CreateBlogPostPage /></Layout>} />
               <Route path="/signals/create" element={<Layout><CreateSignalPage /></Layout>} />
+              <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+              <Route path="/charts" element={<Layout><ChartsPage /></Layout>} />
+              <Route path="/indicators" element={<Layout><IndicatorsPage /></Layout>} />
               <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
             </Routes>
           </LanguageProvider>
