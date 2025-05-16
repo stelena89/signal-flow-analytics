@@ -1,5 +1,5 @@
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -10,6 +10,15 @@ interface AdminRouteProps {
 const AdminRoute = ({ children }: AdminRouteProps) => {
   const { user, isAdmin, isLoading } = useAuth();
   const location = useLocation();
+
+  // For debugging
+  useEffect(() => {
+    console.log("AdminRoute rendering with:", { 
+      user: user ? "Authenticated" : "Not authenticated", 
+      isAdmin, 
+      isLoading 
+    });
+  }, [user, isAdmin, isLoading]);
 
   // Show loading state
   if (isLoading) {
@@ -25,15 +34,18 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
 
   // Redirect to login if not authenticated
   if (!user) {
+    console.log("User not authenticated, redirecting to login");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Redirect to home if not an admin
   if (!isAdmin) {
+    console.log("User is not admin, redirecting to home");
     return <Navigate to="/" replace />;
   }
 
   // Render the protected admin content
+  console.log("User is admin, rendering admin content");
   return <>{children}</>;
 };
 

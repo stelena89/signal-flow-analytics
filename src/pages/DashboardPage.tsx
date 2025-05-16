@@ -10,18 +10,28 @@ export default function DashboardPage() {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect non-admin users
   useEffect(() => {
-    if (user && !isAdmin) {
-      navigate("/");
-    }
-  }, [user, isAdmin, navigate]);
+    console.log("DashboardPage rendered, user:", !!user, "isAdmin:", isAdmin);
+  }, [user, isAdmin]);
 
   // If no user is logged in, redirect to login
   if (!user) {
+    console.log("No user, redirecting to login");
     navigate("/login");
     return null;
   }
+
+  // Redirect non-admin users
+  if (!isAdmin) {
+    console.log("User is not admin, redirecting to home");
+    navigate("/");
+    return null;
+  }
+
+  const handleNavigate = (path: string) => {
+    console.log("Navigating to:", path);
+    navigate(path);
+  };
 
   return (
     <div className="py-8 px-4">
@@ -43,7 +53,7 @@ export default function DashboardPage() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => navigate("/blog/create")}
+                onClick={() => handleNavigate("/blog/create")}
                 className="w-full"
               >
                 <Plus className="h-4 w-4 mr-2" /> New Blog Post
@@ -65,7 +75,7 @@ export default function DashboardPage() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => navigate("/analysis/create")}
+                onClick={() => handleNavigate("/analysis/create")}
                 className="w-full"
               >
                 <Plus className="h-4 w-4 mr-2" /> New Analysis
@@ -87,7 +97,7 @@ export default function DashboardPage() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => navigate("/signals/create")}
+                onClick={() => handleNavigate("/signals/create")}
                 className="w-full"
               >
                 <Plus className="h-4 w-4 mr-2" /> New Signal
