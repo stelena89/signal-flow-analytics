@@ -6,6 +6,7 @@ import {
   Routes,
   Navigate
 } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import HomePage from './pages/HomePage';
 import SignalsPage from './pages/SignalsPage';
@@ -22,27 +23,32 @@ import ProfilePage from './pages/ProfilePage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import Layout from './components/Layout';
 
+// Create a client
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
-    <Router>
-      <AuthProvider>
-        <LanguageProvider>
-          <Routes>
-            <Route path="/" element={<Layout><HomePage /></Layout>} />
-            <Route path="/signals" element={<Layout><SignalsPage /></Layout>} />
-            <Route path="/analysis" element={<Layout><AnalysisPage /></Layout>} />
-            <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
-            <Route path="/auth/callback" element={<AuthCallbackPage />} />
-            <Route path="/analysis/create" element={<Layout><CreateAnalysisPage /></Layout>} />
-            <Route path="/blog/create" element={<Layout><CreateBlogPostPage /></Layout>} />
-            <Route path="/signals/create" element={<Layout><CreateSignalPage /></Layout>} />
-            <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
-          </Routes>
-        </LanguageProvider>
-      </AuthProvider>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AuthProvider>
+          <LanguageProvider>
+            <Routes>
+              <Route path="/" element={<Layout><HomePage /></Layout>} />
+              <Route path="/signals" element={<Layout><SignalsPage /></Layout>} />
+              <Route path="/analysis" element={<Layout><AnalysisPage /></Layout>} />
+              <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
+              <Route path="/auth/callback" element={<AuthCallbackPage />} />
+              <Route path="/analysis/create" element={<Layout><CreateAnalysisPage /></Layout>} />
+              <Route path="/blog/create" element={<Layout><CreateBlogPostPage /></Layout>} />
+              <Route path="/signals/create" element={<Layout><CreateSignalPage /></Layout>} />
+              <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
+            </Routes>
+          </LanguageProvider>
+        </AuthProvider>
+      </Router>
+    </QueryClientProvider>
   );
 };
 
