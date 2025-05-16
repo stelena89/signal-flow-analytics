@@ -25,6 +25,7 @@ import Layout from './components/Layout';
 import AboutPage from './pages/AboutPage';
 import ChartsPage from './pages/ChartsPage';
 import IndicatorsPage from './pages/IndicatorsPage';
+import DashboardPage from './pages/DashboardPage';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
               <Route path="/charts" element={<Layout><ChartsPage /></Layout>} />
               <Route path="/indicators" element={<Layout><IndicatorsPage /></Layout>} />
+              <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
               <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
             </Routes>
           </LanguageProvider>

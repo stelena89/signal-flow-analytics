@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { t } = useLanguage();
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   const isActive = (path: string) => {
     return location.pathname === path;
