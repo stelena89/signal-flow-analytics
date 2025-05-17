@@ -1,24 +1,11 @@
 
 import SignalForm from "@/components/forms/SignalForm";
-import AdminRoute from "@/components/AdminRoute";
-import { useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import AdminPageLayout from "@/components/AdminPageLayout";
 
 export default function CreateSignalPage() {
-  const { isAdmin } = useAuth();
-  
-  useEffect(() => {
-    console.log("CreateSignalPage rendered, isAdmin:", isAdmin);
-  }, [isAdmin]);
-
   return (
-    <AdminRoute>
-      <div className="py-8 px-4">
-        <div className="container mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Create New Trading Signal</h1>
-          <SignalForm />
-        </div>
-      </div>
-    </AdminRoute>
+    <AdminPageLayout title="Create New Trading Signal">
+      <SignalForm />
+    </AdminPageLayout>
   );
 }
