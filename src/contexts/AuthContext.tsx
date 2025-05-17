@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { supabase } from '../integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -24,16 +23,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
+  const checkUserRole = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', userId)
+      .single();
+      
+      if (error) {
+        console.error("Error checking user role:", error);
+        setIsAdmin(false);
+        return;
+      }
+      
+      // Explicitly check if data exists and has is_admin property that is true
+      setIsAdmin(!!data?.is_admin);
+      console.log("Admin status:", !!data?.is_admin);
+    } catch (error) {
+      console.error("Error checking user role:", error);
+      setIsAdmin(false);
+    }
+  };
+
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
+        setIsLoading(true);
         const { data: { session: currentSession } } = await supabase.auth.getSession();
-        setSession(currentSession);
-        setUser(currentSession?.user || null);
         
-        // Check if user is admin only if there's a user logged in
         if (currentSession?.user) {
+          setSession(currentSession);
+          setUser(currentSession.user);
+          
+          // Check for admin status
           await checkUserRole(currentSession.user.id);
+        } else {
+          setSession(null);
+          setUser(null);
+          setIsAdmin(false);
         }
       } catch (error) {
         console.error("Error getting user:", error);
@@ -42,34 +70,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    const checkUserRole = async (userId: string) => {
-      try {
-        const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-        
-      if (error) throw error;
-      
-      // Safely check if the is_admin property exists on the data object
-      setIsAdmin(data && 'is_admin' in data ? !!data.is_admin : false);
-      } catch (error) {
-        console.error("Error checking user role:", error);
-        setIsAdmin(false);
-      }
-    };
-
+    // Setup auth state change handler
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      console.log("Auth state changed:", _event, newSession?.user?.id);
+      
       setSession(newSession);
       setUser(newSession?.user || null);
+      
       if (newSession?.user) {
-        checkUserRole(newSession.user.id);
+        await checkUserRole(newSession.user.id);
       } else {
         setIsAdmin(false);
       }
+      
       setIsLoading(false);
     });
 
