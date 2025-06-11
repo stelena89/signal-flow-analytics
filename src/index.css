@@ -5,66 +5,67 @@
  
 @layer base {
   :root {
-    /* Light mode */
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    /* Light mode - Professional color scheme */
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 220 15% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 213 94% 68%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 213 94% 68%;
-    --accent-foreground: 0 0% 98%;
+    --popover-foreground: 220 15% 15%;
+    --primary: 222 84% 24%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 84% 24%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 84% 24%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 213 94% 68%;
-    --radius: 0.6rem;
-    --positive: 213 94% 68%;
-    --negative: 0 72% 51%;
-    --neutral: 240 5% 64%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 24%;
+    --radius: 0.5rem;
+    --positive: 142 76% 36%;
+    --negative: 0 84% 60%;
+    --neutral: 215 16% 47%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 213 94% 68%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 213 94% 68%;
-    --accent-foreground: 0 0% 98%;
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 222 84% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 84% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 92% 76%;
+    --primary-foreground: 222 84% 5%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 213 94% 68%;
-    --radius: 0.6rem;
-    --positive: 213 94% 68%;
-    --negative: 0 72% 51%;
-    --neutral: 240 5% 64%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 217 92% 76%;
+    --radius: 0.5rem;
+    --positive: 142 76% 36%;
+    --negative: 0 84% 60%;
+    --neutral: 215 20% 65%;
   }
 
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
-/* Import Arabic fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
+/* Import professional fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap');
 
 @layer components {
   /* Apply Arabic font to Arabic text */
@@ -72,46 +73,46 @@
     font-family: 'Cairo', sans-serif;
   }
 
-  /* Custom classes for signal badges */
+  /* Professional signal badges */
   .signal-badge-buy {
-    @apply bg-positive/20 text-positive flex items-center;
+    @apply bg-positive/10 text-positive border border-positive/20 flex items-center;
   }
 
   .signal-badge-sell {
-    @apply bg-negative/20 text-negative flex items-center;
+    @apply bg-negative/10 text-negative border border-negative/20 flex items-center;
   }
 
-  /* Card and hover effects */
+  /* Enhanced card effects */
   .hover-card {
-    @apply transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/20;
   }
 
-  .premium-card {
-    @apply border border-premium-accent/20 bg-card-bg shadow-premium;
+  .professional-card {
+    @apply border border-border bg-card shadow-sm backdrop-blur-sm;
   }
 
-  /* Gradient backgrounds */
+  /* Professional gradients */
   .gradient-bg {
-    @apply bg-gradient-to-br from-sidebar-bg via-background to-card-bg;
+    @apply bg-gradient-to-br from-background via-muted/50 to-secondary/30;
   }
 
   .hero-gradient {
-    @apply bg-gradient-to-br from-[#10141E] via-[#151A27] to-[#1A1F2C];
+    @apply bg-gradient-to-br from-primary/5 via-secondary/30 to-muted/50;
   }
 
-  /* Premium text */
-  .premium-text {
-    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-transparent bg-clip-text;
+  /* Professional text */
+  .professional-text {
+    @apply bg-gradient-to-r from-primary to-primary/80 text-transparent bg-clip-text;
   }
 
   /* Glass card */
   .glass-card {
-    @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
+    @apply bg-card/80 backdrop-blur-sm border border-border shadow-sm;
   }
 
-  /* Premium badge */
-  .premium-badge {
-    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
+  /* Professional badge */
+  .professional-badge {
+    @apply bg-primary text-primary-foreground;
   }
 }
 
@@ -137,21 +138,17 @@
     margin-right: 0.5rem;
   }
   
-  /* Glow effects */
-  .premium-glow {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  /* Professional effects */
+  .professional-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
-  /* Additional animations */
+  /* Enhanced hover effects */
   .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-1;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
   }
   
-  /* Fixed hover glow effects */
   .hover-glow {
-    @apply transition-all duration-300;
-  }
-  .hover-glow:hover {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    @apply transition-all duration-300 hover:shadow-md;
   }
 }
