@@ -5,57 +5,56 @@
  
 @layer base {
   :root {
-    /* Light mode - Professional Blue Theme */
-    --background: 248 250 252;
-    --foreground: 15 23 42;
-    --card: 255 255 255;
-    --card-foreground: 15 23 42;
-    --popover: 255 255 255;
-    --popover-foreground: 15 23 42;
-    --primary: 59 130 246;
-    --primary-foreground: 248 250 252;
-    --secondary: 241 245 249;
-    --secondary-foreground: 51 65 85;
-    --muted: 241 245 249;
-    --muted-foreground: 100 116 139;
-    --accent: 59 130 246;
-    --accent-foreground: 248 250 252;
-    --destructive: 220 38 38;
-    --destructive-foreground: 248 250 252;
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 59 130 246;
-    --radius: 0.5rem;
-    --positive: 5 150 105;
-    --negative: 220 38 38;
-    --neutral: 100 116 139;
+    /* Light mode */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 172 80% 43%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 172 80% 43%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 172 80% 43%;
+    --radius: 0.6rem;
+    --positive: 142 70% 49%;
+    --negative: 0 72% 51%;
+    --neutral: 240 5% 64%;
   }
 
   .dark {
-    /* Dark mode - Professional Blue Theme */
-    --background: 15 23 42;
-    --foreground: 248 250 252;
-    --card: 30 41 59;
-    --card-foreground: 248 250 252;
-    --popover: 30 41 59;
-    --popover-foreground: 248 250 252;
-    --primary: 96 165 250;
-    --primary-foreground: 15 23 42;
-    --secondary: 51 65 85;
-    --secondary-foreground: 226 232 240;
-    --muted: 51 65 85;
-    --muted-foreground: 148 163 184;
-    --accent: 96 165 250;
-    --accent-foreground: 15 23 42;
-    --destructive: 239 68 68;
-    --destructive-foreground: 248 250 252;
-    --border: 71 85 105;
-    --input: 71 85 105;
-    --ring: 96 165 250;
-    --radius: 0.5rem;
-    --positive: 34 197 94;
-    --negative: 239 68 68;
-    --neutral: 148 163 184;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 172 80% 43%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 172 80% 43%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 172 80% 43%;
+    --radius: 0.6rem;
+    --positive: 142 70% 49%;
+    --negative: 0 72% 51%;
+    --neutral: 240 5% 64%;
   }
 
   body {
@@ -64,15 +63,10 @@
   }
 }
 
-/* Import professional fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap');
+/* Import Arabic fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
 
 @layer components {
-  /* Apply professional font */
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-  
   /* Apply Arabic font to Arabic text */
   .font-arabic {
     font-family: 'Cairo', sans-serif;
@@ -80,44 +74,44 @@
 
   /* Custom classes for signal badges */
   .signal-badge-buy {
-    @apply bg-positive/10 text-positive border border-positive/20 flex items-center;
+    @apply bg-positive/20 text-positive flex items-center;
   }
 
   .signal-badge-sell {
-    @apply bg-negative/10 text-negative border border-negative/20 flex items-center;
+    @apply bg-negative/20 text-negative flex items-center;
   }
 
   /* Card and hover effects */
   .hover-card {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
   }
 
   .premium-card {
-    @apply border border-primary/20 bg-card shadow-lg;
+    @apply border border-premium-accent/20 bg-card-bg shadow-premium;
   }
 
   /* Gradient backgrounds */
   .gradient-bg {
-    @apply bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900;
+    @apply bg-gradient-to-br from-sidebar-bg via-background to-card-bg;
   }
 
   .hero-gradient {
-    @apply bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700;
+    @apply bg-gradient-to-br from-[#10141E] via-[#151A27] to-[#1A1F2C];
   }
 
-  /* Professional text */
+  /* Premium text */
   .premium-text {
-    @apply bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text;
+    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-transparent bg-clip-text;
   }
 
   /* Glass card */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border shadow-sm;
+    @apply bg-card-bg/50 backdrop-blur-sm border border-white/10 shadow-md;
   }
 
   /* Premium badge */
   .premium-badge {
-    @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white;
+    @apply bg-gradient-to-r from-premium-accent to-premium-blue text-white;
   }
 }
 
@@ -143,9 +137,9 @@
     margin-right: 0.5rem;
   }
   
-  /* Professional glow effects */
+  /* Glow effects */
   .premium-glow {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
   }
 
   /* Additional animations */
@@ -158,6 +152,6 @@
     @apply transition-all duration-300;
   }
   .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 15px rgba(3, 218, 197, 0.3);
   }
 }
