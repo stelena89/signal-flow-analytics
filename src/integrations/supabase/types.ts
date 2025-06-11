@@ -9,7 +9,186 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      blog_posts: {
+        Row: {
+          author: string
+          category: string
+          content: string | null
+          created_at: string
+          date: string
+          excerpt: string
+          id: string
+          image: string | null
+          read_time: string | null
+          tags: string[] | null
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          author: string
+          category: string
+          content?: string | null
+          created_at?: string
+          date?: string
+          excerpt: string
+          id?: string
+          image?: string | null
+          read_time?: string | null
+          tags?: string[] | null
+          title: string
+          type: string
+          updated_at?: string
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string | null
+          created_at?: string
+          date?: string
+          excerpt?: string
+          id?: string
+          image?: string | null
+          read_time?: string | null
+          tags?: string[] | null
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      market_analysis: {
+        Row: {
+          asset_type: string
+          author: string
+          content: string
+          created_at: string
+          date: string
+          id: string
+          pair: string
+          summary: string
+          tags: string[] | null
+          timeframe: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset_type: string
+          author: string
+          content: string
+          created_at?: string
+          date?: string
+          id?: string
+          pair: string
+          summary: string
+          tags?: string[] | null
+          timeframe: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset_type?: string
+          author?: string
+          content?: string
+          created_at?: string
+          date?: string
+          id?: string
+          pair?: string
+          summary?: string
+          tags?: string[] | null
+          timeframe?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          is_admin: boolean
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          is_admin?: boolean
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      trading_signals: {
+        Row: {
+          created_at: string
+          date: string
+          entry: string
+          id: string
+          pair: string
+          pips: number | null
+          status: string
+          stop_loss: string
+          take_profit: string
+          timeframe: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          entry: string
+          id?: string
+          pair: string
+          pips?: number | null
+          status: string
+          stop_loss: string
+          take_profit: string
+          timeframe: string
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          entry?: string
+          id?: string
+          pair?: string
+          pips?: number | null
+          status?: string
+          stop_loss?: string
+          take_profit?: string
+          timeframe?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
