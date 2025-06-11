@@ -14,7 +14,10 @@ import {
   BookOpen, 
   TrendingUp, 
   TrendingDown,
-  Bell
+  Bell,
+  CheckCircle,
+  Shield,
+  Zap
 } from "lucide-react";
 
 // Sample data for demonstration
@@ -85,25 +88,31 @@ const HomePage = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden bg-gradient-to-b from-accent to-background">
-        <div className="container mx-auto flex flex-col md:flex-row items-center gap-12">
+      <section className="relative py-24 px-4 overflow-hidden hero-gradient">
+        <div className="container mx-auto flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <div className="flex items-center gap-2 mb-6">
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                <CheckCircle className="w-3 h-3 mr-1" />
+                Trusted by 10,000+ traders
+              </Badge>
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Professional<br /> 
-              <span className="text-primary">Trading Analysis</span><br />
-              for Serious Traders
+              <span className="professional-text">Trading Intelligence</span><br />
+              Made Simple
             </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Get real-time signals, in-depth market analysis, and premium trading indicators backed by professional traders.
+            <p className="text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">
+              Advanced market analysis, real-time signals, and institutional-grade tools to help you trade with confidence and precision.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg">
+              <Button asChild size="lg" className="h-12 px-8 font-semibold">
                 <Link to="/signals">
                   <SignalIcon className="mr-2 h-5 w-5" />
-                  Latest Signals
+                  View Live Signals
                 </Link>
               </Button>
-              <Button variant="outline" asChild size="lg">
+              <Button variant="outline" asChild size="lg" className="h-12 px-8 font-semibold">
                 <Link to="/analysis">
                   <BarChart className="mr-2 h-5 w-5" />
                   Market Analysis
@@ -111,66 +120,73 @@ const HomePage = () => {
               </Button>
             </div>
           </div>
-          <div className="flex-1 w-full max-w-xl animate-slide-in">
-            <TradingViewWidget 
-              height={400} 
-              symbol="BITSTAMP:BTCUSD" 
-              interval="D"
-              hide_side_toolbar={true}
-            />
+          <div className="flex-1 w-full max-w-2xl animate-slide-in">
+            <div className="professional-card p-6 rounded-xl">
+              <TradingViewWidget 
+                height={450} 
+                symbol="BITSTAMP:BTCUSD" 
+                interval="D"
+                hide_side_toolbar={true}
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4">
+      <section className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Trading Tools for <span className="text-primary">Every Strategy</span>
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">
+              Everything You Need to <span className="professional-text">Trade Better</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Professional-grade tools and analysis backed by institutional trading expertise
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="glass-card p-6 hover-card">
-              <div className="rounded-full bg-primary/10 p-3 w-fit mb-4">
-                <SignalIcon className="h-6 w-6 text-primary" />
+            <div className="professional-card p-8 hover-card rounded-xl">
+              <div className="rounded-xl bg-primary/10 p-4 w-fit mb-6">
+                <SignalIcon className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Real-Time Signals</h3>
-              <p className="text-muted-foreground mb-4">
-                Get actionable trading signals with precise entry, stop-loss, and take-profit levels.
+              <h3 className="text-2xl font-semibold mb-4">Precision Signals</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Receive high-probability trade setups with exact entry points, stop-loss levels, and profit targets based on institutional analysis.
               </p>
-              <Button variant="link" asChild className="p-0">
+              <Button variant="link" asChild className="p-0 h-auto font-semibold">
                 <Link to="/signals" className="flex items-center">
-                  View Signals <ArrowRight className="ml-2 h-4 w-4" />
+                  Explore Signals <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
 
-            <div className="glass-card p-6 hover-card">
-              <div className="rounded-full bg-primary/10 p-3 w-fit mb-4">
-                <BarChart className="h-6 w-6 text-primary" />
+            <div className="professional-card p-8 hover-card rounded-xl">
+              <div className="rounded-xl bg-primary/10 p-4 w-fit mb-6">
+                <BarChart className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Market Analysis</h3>
-              <p className="text-muted-foreground mb-4">
-                Deep dives into market conditions, trends, and trading opportunities.
+              <h3 className="text-2xl font-semibold mb-4">Market Intelligence</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Comprehensive market analysis combining technical patterns, fundamental drivers, and sentiment indicators.
               </p>
-              <Button variant="link" asChild className="p-0">
+              <Button variant="link" asChild className="p-0 h-auto font-semibold">
                 <Link to="/analysis" className="flex items-center">
-                  Read Analysis <ArrowRight className="ml-2 h-4 w-4" />
+                  View Analysis <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
 
-            <div className="glass-card p-6 hover-card">
-              <div className="rounded-full bg-primary/10 p-3 w-fit mb-4">
-                <ChartLine className="h-6 w-6 text-primary" />
+            <div className="professional-card p-8 hover-card rounded-xl">
+              <div className="rounded-xl bg-primary/10 p-4 w-fit mb-6">
+                <ChartLine className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Custom Indicators</h3>
-              <p className="text-muted-foreground mb-4">
-                Powerful, battle-tested indicators to enhance your trading strategy.
+              <h3 className="text-2xl font-semibold mb-4">Pro Indicators</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Advanced trading indicators designed to identify market structure, momentum shifts, and optimal entry points.
               </p>
-              <Button variant="link" asChild className="p-0">
+              <Button variant="link" asChild className="p-0 h-auto font-semibold">
                 <Link to="/indicators" className="flex items-center">
-                  Explore Indicators <ArrowRight className="ml-2 h-4 w-4" />
+                  Browse Tools <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
@@ -179,11 +195,14 @@ const HomePage = () => {
       </section>
 
       {/* Recent Signals Section */}
-      <section className="py-16 px-4 bg-accent/30">
+      <section className="py-20 px-4">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold">Recent Signals</h2>
-            <Button variant="outline" asChild>
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Latest Trade Signals</h2>
+              <p className="text-muted-foreground">Real-time opportunities from our analysis team</p>
+            </div>
+            <Button variant="outline" asChild className="font-semibold">
               <Link to="/signals">View All Signals</Link>
             </Button>
           </div>
@@ -197,16 +216,19 @@ const HomePage = () => {
       </section>
 
       {/* Featured Indicators Section */}
-      <section className="py-16 px-4">
+      <section className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold">Featured Indicators</h2>
-            <Button variant="outline" asChild>
-              <Link to="/indicators">View All Indicators</Link>
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Professional Tools</h2>
+              <p className="text-muted-foreground">Battle-tested indicators for serious traders</p>
+            </div>
+            <Button variant="outline" asChild className="font-semibold">
+              <Link to="/indicators">Explore All Tools</Link>
             </Button>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             {featuredIndicators.map((indicator) => (
               <IndicatorCard key={indicator.id} indicator={indicator} />
             ))}
@@ -215,64 +237,68 @@ const HomePage = () => {
       </section>
 
       {/* Performance Stats */}
-      <section className="py-16 px-4 bg-accent/30">
+      <section className="py-20 px-4">
         <div className="container mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-12">Performance Track Record</h2>
+          <h2 className="text-3xl font-bold text-center mb-16">Proven Track Record</h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="flex justify-center mb-2">
-                <TrendingUp className="h-8 w-8 text-positive" />
+              <div className="rounded-xl bg-positive/10 p-4 w-fit mx-auto mb-4">
+                <TrendingUp className="h-10 w-10 text-positive" />
               </div>
-              <div className="text-3xl font-bold mb-1">87%</div>
-              <div className="text-sm text-muted-foreground">Win Rate (Last 3 Months)</div>
+              <div className="text-4xl font-bold mb-2">87%</div>
+              <div className="text-muted-foreground font-medium">Win Rate</div>
+              <div className="text-sm text-muted-foreground">Last 3 months</div>
             </div>
 
             <div className="text-center">
-              <div className="flex justify-center mb-2">
-                <SignalIcon className="h-8 w-8 text-primary" />
+              <div className="rounded-xl bg-primary/10 p-4 w-fit mx-auto mb-4">
+                <SignalIcon className="h-10 w-10 text-primary" />
               </div>
-              <div className="text-3xl font-bold mb-1">456</div>
-              <div className="text-sm text-muted-foreground">Signals This Year</div>
+              <div className="text-4xl font-bold mb-2">456</div>
+              <div className="text-muted-foreground font-medium">Signals</div>
+              <div className="text-sm text-muted-foreground">This year</div>
             </div>
 
             <div className="text-center">
-              <div className="flex justify-center mb-2">
-                <TrendingDown className="h-8 w-8 text-negative" />
+              <div className="rounded-xl bg-negative/10 p-4 w-fit mx-auto mb-4">
+                <Shield className="h-10 w-10 text-negative" />
               </div>
-              <div className="text-3xl font-bold mb-1">1.7:1</div>
-              <div className="text-sm text-muted-foreground">Average Risk/Reward</div>
+              <div className="text-4xl font-bold mb-2">1.7:1</div>
+              <div className="text-muted-foreground font-medium">Risk/Reward</div>
+              <div className="text-sm text-muted-foreground">Average ratio</div>
             </div>
 
             <div className="text-center">
-              <div className="flex justify-center mb-2">
-                <BookOpen className="h-8 w-8 text-gold" />
+              <div className="rounded-xl bg-primary/10 p-4 w-fit mx-auto mb-4">
+                <BookOpen className="h-10 w-10 text-primary" />
               </div>
-              <div className="text-3xl font-bold mb-1">24</div>
-              <div className="text-sm text-muted-foreground">Educational Articles</div>
+              <div className="text-4xl font-bold mb-2">24</div>
+              <div className="text-muted-foreground font-medium">Articles</div>
+              <div className="text-sm text-muted-foreground">Educational content</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-primary/10">
+      <section className="py-20 px-4 bg-primary/5 border-t border-border">
         <div className="container mx-auto text-center">
-          <div className="flex justify-center mb-4">
-            <Bell className="h-10 w-10 text-primary animate-pulse" />
+          <div className="rounded-xl bg-primary/10 p-4 w-fit mx-auto mb-6">
+            <Zap className="h-12 w-12 text-primary" />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Never Miss a Trading Opportunity</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Get instant notifications for high-probability trade setups and market analysis directly on your phone.
+          <h2 className="text-4xl font-bold mb-4">Ready to Trade Like a Pro?</h2>
+          <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
+            Join thousands of traders who have elevated their performance with our professional analysis and tools.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg">
+            <Button size="lg" className="h-12 px-8 font-semibold">
               <SignalIcon className="mr-2 h-5 w-5" />
               Start Free Trial
             </Button>
-            <Button variant="outline" size="lg">
+            <Button variant="outline" size="lg" className="h-12 px-8 font-semibold">
               <Bell className="mr-2 h-5 w-5" />
-              Join Our Telegram
+              Join Community
             </Button>
           </div>
         </div>
