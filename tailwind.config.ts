@@ -53,24 +53,28 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Trading specific colors - updated for premium dark theme
-				up: "#0ECB81",
-				down: "#F6465D",
-				positive: "#0ECB81",
-				negative: "#F6465D",
-				neutral: "#8A8F98",
-				gold: "#FFD700",
-				"gold-light": "#FFF4B8",
-				"premium-accent": "#03DAC5", // Teal/aqua accent
-				"premium-blue": "#3182CE", // Blue accent
-				"chart-bg": "#10141E", // Darker chart background
-				"card-bg": "#1A1F2C", // Card background
-				"sidebar-bg": "#0F1319", // Darker sidebar background
+				// Trading specific colors - Professional theme
+				up: "#059669",
+				down: "#DC2626",
+				positive: "#059669",
+				negative: "#DC2626",
+				neutral: "#6B7280",
+				gold: "#F59E0B",
+				"gold-light": "#FEF3C7",
+				"professional-blue": "#1E40AF",
+				"professional-gray": "#374151",
+				"chart-bg": "#F8FAFC",
+				"card-bg": "#FFFFFF",
+				"sidebar-bg": "#F1F5F9",
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+				arabic: ['Cairo', 'sans-serif'],
 			},
 			keyframes: {
 				"accordion-down": {
@@ -95,7 +99,7 @@ export default {
 				},
 				pulse: {
 					"0%, 100%": { opacity: "1" },
-					"50%": { opacity: "0.5" },
+					"50%": { opacity: "0.7" },
 				},
 				float: {
 					"0%, 100%": { transform: "translateY(0)" },
@@ -117,9 +121,9 @@ export default {
 				"card-hover": "card-hover 0.2s ease-out",
 			},
 			boxShadow: {
-				'premium': '0 4px 20px rgba(3, 218, 197, 0.15)',
-				'gold': '0 4px 20px rgba(255, 215, 0, 0.15)',
-				'card': '0 8px 16px rgba(0, 0, 0, 0.2)',
+				'premium': '0 4px 25px rgba(30, 64, 175, 0.15)',
+				'gold': '0 4px 25px rgba(245, 158, 11, 0.15)',
+				'card': '0 4px 12px rgba(0, 0, 0, 0.05)',
 			}
 		}
 	},
