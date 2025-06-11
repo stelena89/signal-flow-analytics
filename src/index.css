@@ -5,26 +5,26 @@
  
 @layer base {
   :root {
-    /* Light mode - Professional Blue/Gray Theme */
+    /* Light mode - Professional Blue Theme */
     --background: 248 250 252;
     --foreground: 15 23 42;
     --card: 255 255 255;
     --card-foreground: 15 23 42;
     --popover: 255 255 255;
     --popover-foreground: 15 23 42;
-    --primary: 30 64 175;
+    --primary: 59 130 246;
     --primary-foreground: 248 250 252;
     --secondary: 241 245 249;
     --secondary-foreground: 51 65 85;
     --muted: 241 245 249;
     --muted-foreground: 100 116 139;
-    --accent: 30 64 175;
+    --accent: 59 130 246;
     --accent-foreground: 248 250 252;
     --destructive: 220 38 38;
     --destructive-foreground: 248 250 252;
     --border: 226 232 240;
     --input: 226 232 240;
-    --ring: 30 64 175;
+    --ring: 59 130 246;
     --radius: 0.5rem;
     --positive: 5 150 105;
     --negative: 220 38 38;
@@ -32,26 +32,26 @@
   }
 
   .dark {
-    /* Dark mode - Professional Dark Theme */
-    --background: 2 6 23;
+    /* Dark mode - Professional Blue Theme */
+    --background: 15 23 42;
     --foreground: 248 250 252;
-    --card: 15 23 42;
+    --card: 30 41 59;
     --card-foreground: 248 250 252;
-    --popover: 15 23 42;
+    --popover: 30 41 59;
     --popover-foreground: 248 250 252;
-    --primary: 59 130 246;
-    --primary-foreground: 2 6 23;
-    --secondary: 30 41 59;
+    --primary: 96 165 250;
+    --primary-foreground: 15 23 42;
+    --secondary: 51 65 85;
     --secondary-foreground: 226 232 240;
-    --muted: 30 41 59;
+    --muted: 51 65 85;
     --muted-foreground: 148 163 184;
-    --accent: 59 130 246;
-    --accent-foreground: 2 6 23;
+    --accent: 96 165 250;
+    --accent-foreground: 15 23 42;
     --destructive: 239 68 68;
     --destructive-foreground: 248 250 252;
-    --border: 51 65 85;
-    --input: 51 65 85;
-    --ring: 59 130 246;
+    --border: 71 85 105;
+    --input: 71 85 105;
+    --ring: 96 165 250;
     --radius: 0.5rem;
     --positive: 34 197 94;
     --negative: 239 68 68;
@@ -102,12 +102,12 @@
   }
 
   .hero-gradient {
-    @apply bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800;
+    @apply bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700;
   }
 
   /* Professional text */
   .premium-text {
-    @apply bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text;
+    @apply bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text;
   }
 
   /* Glass card */
@@ -117,7 +117,7 @@
 
   /* Premium badge */
   .premium-badge {
-    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white;
+    @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white;
   }
 }
 

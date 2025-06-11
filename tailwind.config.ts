@@ -53,7 +53,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Trading specific colors - Professional theme
+				// Trading specific colors - Blue theme
 				up: "#059669",
 				down: "#DC2626",
 				positive: "#059669",
@@ -61,7 +61,7 @@ export default {
 				neutral: "#6B7280",
 				gold: "#F59E0B",
 				"gold-light": "#FEF3C7",
-				"professional-blue": "#1E40AF",
+				"professional-blue": "#3B82F6",
 				"professional-gray": "#374151",
 				"chart-bg": "#F8FAFC",
 				"card-bg": "#FFFFFF",
@@ -121,7 +121,7 @@ export default {
 				"card-hover": "card-hover 0.2s ease-out",
 			},
 			boxShadow: {
-				'premium': '0 4px 25px rgba(30, 64, 175, 0.15)',
+				'premium': '0 4px 25px rgba(59, 130, 246, 0.15)',
 				'gold': '0 4px 25px rgba(245, 158, 11, 0.15)',
 				'card': '0 4px 12px rgba(0, 0, 0, 0.05)',
 			}

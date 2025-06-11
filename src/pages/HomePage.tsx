@@ -88,7 +88,7 @@ const HomePage = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80">
+      <section className="relative py-24 px-4 overflow-hidden bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700">
         <div 
           className="absolute inset-0 opacity-30"
           style={{
@@ -110,7 +110,7 @@ const HomePage = () => {
               Access institutional-grade trading signals, comprehensive market analysis, and premium indicators from seasoned professionals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100 shadow-lg">
+              <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100 shadow-lg">
                 <Link to="/signals">
                   <SignalIcon className="mr-2 h-5 w-5" />
                   View Live Signals
@@ -141,11 +141,11 @@ const HomePage = () => {
       <section className="py-20 px-4 bg-gray-50 dark:bg-slate-900">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+            <Badge className="mb-4 bg-blue-500/10 text-blue-600 border-blue-500/20">
               Professional Tools
             </Badge>
             <h2 className="text-4xl font-bold mb-4 text-foreground">
-              Everything You Need to <span className="text-primary">Trade Successfully</span>
+              Everything You Need to <span className="text-blue-600">Trade Successfully</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Our comprehensive suite of trading tools is designed by professionals for professionals who demand excellence.
@@ -154,14 +154,14 @@ const HomePage = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white dark:bg-card p-8 rounded-2xl shadow-card hover-card border border-border">
-              <div className="rounded-full bg-primary/10 p-4 w-fit mb-6">
-                <SignalIcon className="h-8 w-8 text-primary" />
+              <div className="rounded-full bg-blue-500/10 p-4 w-fit mb-6">
+                <SignalIcon className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-foreground">Real-Time Signals</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 Receive instant notifications for high-probability setups with precise entry, stop-loss, and take-profit levels.
               </p>
-              <Button variant="link" asChild className="p-0 text-primary">
+              <Button variant="link" asChild className="p-0 text-blue-600">
                 <Link to="/signals" className="flex items-center font-medium">
                   View Signals <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -169,14 +169,14 @@ const HomePage = () => {
             </div>
 
             <div className="bg-white dark:bg-card p-8 rounded-2xl shadow-card hover-card border border-border">
-              <div className="rounded-full bg-primary/10 p-4 w-fit mb-6">
-                <BarChart className="h-8 w-8 text-primary" />
+              <div className="rounded-full bg-blue-500/10 p-4 w-fit mb-6">
+                <BarChart className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-foreground">Market Analysis</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 In-depth technical and fundamental analysis covering major markets, trends, and trading opportunities.
               </p>
-              <Button variant="link" asChild className="p-0 text-primary">
+              <Button variant="link" asChild className="p-0 text-blue-600">
                 <Link to="/analysis" className="flex items-center font-medium">
                   Read Analysis <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -184,14 +184,14 @@ const HomePage = () => {
             </div>
 
             <div className="bg-white dark:bg-card p-8 rounded-2xl shadow-card hover-card border border-border">
-              <div className="rounded-full bg-primary/10 p-4 w-fit mb-6">
-                <ChartLine className="h-8 w-8 text-primary" />
+              <div className="rounded-full bg-blue-500/10 p-4 w-fit mb-6">
+                <ChartLine className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-foreground">Premium Indicators</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 Advanced technical indicators and tools tested by professional traders for optimal market timing.
               </p>
-              <Button variant="link" asChild className="p-0 text-primary">
+              <Button variant="link" asChild className="p-0 text-blue-600">
                 <Link to="/indicators" className="flex items-center font-medium">
                   Explore Tools <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -267,8 +267,8 @@ const HomePage = () => {
 
             <div className="text-center bg-white dark:bg-card p-6 rounded-2xl shadow-card border border-border">
               <div className="flex justify-center mb-4">
-                <div className="rounded-full bg-primary/10 p-3">
-                  <SignalIcon className="h-8 w-8 text-primary" />
+                <div className="rounded-full bg-blue-500/10 p-3">
+                  <SignalIcon className="h-8 w-8 text-blue-600" />
                 </div>
               </div>
               <div className="text-4xl font-bold mb-2 text-foreground">456</div>
@@ -289,8 +289,8 @@ const HomePage = () => {
 
             <div className="text-center bg-white dark:bg-card p-6 rounded-2xl shadow-card border border-border">
               <div className="flex justify-center mb-4">
-                <div className="rounded-full bg-primary/10 p-3">
-                  <BookOpen className="h-8 w-8 text-primary" />
+                <div className="rounded-full bg-blue-500/10 p-3">
+                  <BookOpen className="h-8 w-8 text-blue-600" />
                 </div>
               </div>
               <div className="text-4xl font-bold mb-2 text-foreground">24</div>
@@ -302,7 +302,7 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-primary to-primary/90">
+      <section className="py-20 px-4 bg-gradient-to-r from-blue-500 to-blue-600">
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <div className="rounded-full bg-white/10 p-4">
@@ -314,7 +314,7 @@ const HomePage = () => {
             Join thousands of successful traders who rely on our professional signals and analysis to make informed trading decisions in volatile markets.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 shadow-lg">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 shadow-lg">
               <SignalIcon className="mr-2 h-5 w-5" />
               Start Free Trial
             </Button>
