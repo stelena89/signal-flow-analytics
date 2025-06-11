@@ -53,16 +53,16 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Trading specific colors - updated for premium dark theme
-				up: "#0ECB81",
+				// Trading specific colors - updated for professional blue theme
+				up: "#3B82F6",
 				down: "#F6465D",
-				positive: "#0ECB81",
+				positive: "#3B82F6",
 				negative: "#F6465D",
 				neutral: "#8A8F98",
 				gold: "#FFD700",
 				"gold-light": "#FFF4B8",
-				"premium-accent": "#03DAC5", // Teal/aqua accent
-				"premium-blue": "#3182CE", // Blue accent
+				"premium-accent": "#1E40AF", // Deep blue accent
+				"premium-blue": "#3B82F6", // Professional blue accent
 				"chart-bg": "#10141E", // Darker chart background
 				"card-bg": "#1A1F2C", // Card background
 				"sidebar-bg": "#0F1319", // Darker sidebar background
@@ -117,7 +117,7 @@ export default {
 				"card-hover": "card-hover 0.2s ease-out",
 			},
 			boxShadow: {
-				'premium': '0 4px 20px rgba(3, 218, 197, 0.15)',
+				'premium': '0 4px 20px rgba(59, 130, 246, 0.15)',
 				'gold': '0 4px 20px rgba(255, 215, 0, 0.15)',
 				'card': '0 8px 16px rgba(0, 0, 0, 0.2)',
 			}
