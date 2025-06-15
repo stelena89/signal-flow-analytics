@@ -139,7 +139,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAdmin(false);
 
       console.log("[signOut] User and session state cleared.");
+      // Use both navigate and a hard reload to ensure app state resets
       navigate("/");
+      window.location.replace("/"); // Hard reload for ultra-reliable logout
     } catch (error: any) {
       console.error("[signOut] Error while signing out:", error);
       throw new Error(error.message || "Error signing out");
