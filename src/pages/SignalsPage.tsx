@@ -39,7 +39,7 @@ import { Link } from "react-router-dom";
 
 const SignalsPage = () => {
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [assetFilter, setAssetFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
@@ -116,8 +116,8 @@ const SignalsPage = () => {
               Expert trading signals for forex, crypto, and more.
             </p>
           </div>
-          {/* Show create button only for logged in users */}
-          {user && (
+          {/* Show create button only for admin users */}
+          {user && isAdmin && (
             <Link to="/signals/create">
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
