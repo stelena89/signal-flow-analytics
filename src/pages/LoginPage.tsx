@@ -69,9 +69,17 @@ function LoginPage() {
       });
       navigate("/");
     } catch (error: any) {
+      // Print the full error for diagnostics
+      console.error("[onLoginSubmit] Login failed:", error);
+
       toast({
         title: "Login failed.",
-        description: error.message,
+        description:
+          // Display as much context as possible
+          error?.message ||
+          (typeof error === "string" ? error : "") ||
+          JSON.stringify(error) ||
+          "Unknown error.",
         variant: "destructive",
       });
     }
