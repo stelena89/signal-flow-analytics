@@ -20,6 +20,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Edit, Trash2 } from "lucide-react";
+import { deleteAnalysis } from "@/services/analysisService";
 
 const AnalysisPage = () => {
   const { user, isAdmin } = useAuth();
@@ -45,6 +47,21 @@ const AnalysisPage = () => {
       });
     }
   }, [error]);
+
+  // Handler for deleting an analysis
+  const handleDeleteAnalysis = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this analysis? This action cannot be undone.")) {
+      const result = await deleteAnalysis(id);
+      if (result) {
+        toast({
+          title: "Analysis deleted",
+          description: "The analysis has been successfully deleted.",
+        });
+        // Optionally refresh list using refetch or reload
+        window.location.reload();
+      }
+    }
+  };
 
   // Filter analysis based on search term and filters
   const filteredAnalysis = analyses.filter((analysis) => {
@@ -170,9 +187,34 @@ const AnalysisPage = () => {
               filteredAnalysis.map((analysis) => (
                 <Card 
                   key={analysis.id} 
-                  className={`cursor-pointer hover-card ${selectedAnalysis?.id === analysis.id ? 'border-primary' : ''}`}
+                  className={`cursor-pointer hover-card relative ${selectedAnalysis?.id === analysis.id ? 'border-primary' : ''}`}
                   onClick={() => setSelectedAnalysis(analysis)}
                 >
+                  {/* Admin controls (top-right corner) */}
+                  {isAdmin && (
+                    <div className="absolute top-3 right-3 flex gap-2 z-10">
+                      <Link
+                        to={`/analysis/edit/${analysis.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-primary" title="Edit">
+                          <Edit size={16} />
+                        </Button>
+                      </Link>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-destructive hover:bg-destructive/10"
+                        title="Delete"
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          await handleDeleteAnalysis(analysis.id);
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
+                  )}
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-base">{analysis.title}</CardTitle>

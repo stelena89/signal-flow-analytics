@@ -27,6 +27,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
+import { deleteBlogPost } from "@/services/blogService";
 
 const BlogPage = () => {
   const { user, isAdmin } = useAuth();
@@ -71,6 +73,21 @@ const BlogPage = () => {
     
     return matchesSearch && matchesCategory && matchesType;
   });
+
+  // Handler for deleting a blog post
+  const handleDeletePost = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this blog post? This action cannot be undone.")) {
+      const result = await deleteBlogPost(id);
+      if (result) {
+        toast({
+          title: "Blog post deleted",
+          description: "The blog post has been successfully deleted.",
+        });
+        // Optionally refresh list using refetch or reload
+        window.location.reload();
+      }
+    }
+  };
 
   return (
     <div className="py-8 px-4">
@@ -162,9 +179,34 @@ const BlogPage = () => {
                 {filteredPosts.map((post) => (
                   <Card 
                     key={post.id} 
-                    className="hover-card cursor-pointer"
+                    className="hover-card cursor-pointer relative"
                     onClick={() => setSelectedPost(post)}
                   >
+                    {/* Admin controls (top-right corner) */}
+                    {isAdmin && (
+                      <div className="absolute top-3 right-3 flex gap-2 z-10">
+                        <Link
+                          to={`/blog/edit/${post.id}`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-primary" title="Edit">
+                            <Edit size={16} />
+                          </Button>
+                        </Link>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="text-destructive hover:bg-destructive/10"
+                          title="Delete"
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            await handleDeletePost(post.id);
+                          }}
+                        >
+                          <Trash2 size={16} />
+                        </Button>
+                      </div>
+                    )}
                     <div className="h-48 bg-accent relative">
                       {post.type === "video" && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/50">

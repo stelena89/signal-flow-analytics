@@ -36,6 +36,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Edit, Trash2 } from "lucide-react";
+import { deleteSignal } from "@/services/signalService";
 
 const SignalsPage = () => {
   const { t } = useLanguage();
@@ -101,6 +103,21 @@ const SignalsPage = () => {
   // Extract unique timeframes, statuses for filters
   const uniqueTimeframes = Array.from(new Set(signals.map(s => s.timeframe)));
   const uniqueStatuses = Array.from(new Set(signals.map(s => s.status)));
+
+  // Handler for deleting a signal
+  const handleDeleteSignal = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this signal? This action cannot be undone.")) {
+      const result = await deleteSignal(id);
+      if (result) {
+        toast({
+          title: "Signal deleted",
+          description: "The signal has been successfully deleted.",
+        });
+        // Optionally refresh list using refetch or reload
+        window.location.reload();
+      }
+    }
+  };
 
   const handleRowClick = (signal: Signal) => {
     setSelectedSignal(signal);
@@ -273,6 +290,32 @@ const SignalsPage = () => {
                             </span>
                           )}
                         </TableCell>
+                        {isAdmin && (
+                          <TableCell className="text-right">
+                            <div className="flex gap-2 justify-end">
+                              <Link
+                                to={`/signals/edit/${signal.id}`}
+                                onClick={e => e.stopPropagation()}
+                              >
+                                <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-primary" title="Edit">
+                                  <Edit size={16} />
+                                </Button>
+                              </Link>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="text-destructive hover:bg-destructive/10"
+                                title="Delete"
+                                onClick={async (e) => {
+                                  e.stopPropagation();
+                                  await handleDeleteSignal(signal.id);
+                                }}
+                              >
+                                <Trash2 size={16} />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))
                   ) : (
