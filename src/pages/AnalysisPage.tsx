@@ -72,18 +72,6 @@ const AnalysisPage = () => {
   // Get unique timeframes for filter
   const allTimeframes = Array.from(new Set(analyses.map(a => a.timeframe)));
 
-  if (!user) {
-    return (
-      <div className="py-8 px-4 text-center">
-        <h1 className="text-3xl font-bold mb-4">Market Analysis</h1>
-        <p className="mb-4">Please log in to view market analyses.</p>
-        <Button asChild>
-          <Link to="/login">Login</Link>
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto">
@@ -95,6 +83,7 @@ const AnalysisPage = () => {
             </p>
           </div>
           
+          {/* Show create button only for logged in users */}
           {user && (
             <Link to="/analysis/create">
               <Button>

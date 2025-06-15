@@ -106,18 +106,6 @@ const SignalsPage = () => {
     setSelectedSignal(signal);
   };
 
-  if (!user) {
-    return (
-      <div className="py-8 px-4 text-center">
-        <h1 className="text-3xl font-bold mb-4">{t("signals.title")}</h1>
-        <p className="mb-4">Please log in to view trading signals.</p>
-        <Button asChild>
-          <a href="/login">Login</a>
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto">
@@ -128,7 +116,7 @@ const SignalsPage = () => {
               Expert trading signals for forex, crypto, and more.
             </p>
           </div>
-          
+          {/* Show create button only for logged in users */}
           {user && (
             <Link to="/signals/create">
               <Button>
@@ -138,7 +126,6 @@ const SignalsPage = () => {
             </Link>
           )}
         </div>
-
         <Tabs defaultValue="table" className="w-full mb-6">
           <TabsList>
             <TabsTrigger value="table">{t("signals.tableView")}</TabsTrigger>

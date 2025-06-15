@@ -72,18 +72,6 @@ const BlogPage = () => {
     return matchesSearch && matchesCategory && matchesType;
   });
 
-  if (!user) {
-    return (
-      <div className="py-8 px-4 text-center">
-        <h1 className="text-3xl font-bold mb-4">Trading Education</h1>
-        <p className="mb-4">Please log in to view educational content.</p>
-        <Button asChild>
-          <Link to="/login">Login</Link>
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto">
@@ -94,7 +82,7 @@ const BlogPage = () => {
               Educational articles, videos, and strategy guides for traders of all levels.
             </p>
           </div>
-          
+          {/* Show create button only for logged in users */}
           {user && (
             <Link to="/blog/create">
               <Button>
@@ -104,7 +92,6 @@ const BlogPage = () => {
             </Link>
           )}
         </div>
-
         {/* Filters Section */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-10 gap-4">
           <div className="md:col-span-5">
