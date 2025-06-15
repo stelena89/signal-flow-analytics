@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +37,17 @@ type AnalysisFormValues = {
   tags: string;
 };
 
-export default function AnalysisForm() {
+interface AnalysisFormProps {
+  defaultValues?: Partial<AnalysisFormValues>;
+  onSubmit?: (data: AnalysisFormValues) => Promise<void>;
+  submitLabel?: string;
+}
+
+export default function AnalysisForm({
+  defaultValues,
+  onSubmit,
+  submitLabel,
+}: AnalysisFormProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,10 +61,25 @@ export default function AnalysisForm() {
       timeframe: "Daily",
       asset_type: "forex",
       tags: "",
+      ...defaultValues,
     },
   });
 
-  const onSubmit = async (data: AnalysisFormValues) => {
+  useEffect(() => {
+    if (defaultValues) {
+      form.reset({ ...form.getValues(), ...defaultValues });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValues]);
+
+  const handleSubmit = async (data: AnalysisFormValues) => {
+    if (onSubmit) {
+      setIsSubmitting(true);
+      await onSubmit(data);
+      setIsSubmitting(false);
+      return;
+    }
+
     if (!user) {
       toast({
         title: "Authentication required",
@@ -88,7 +112,7 @@ export default function AnalysisForm() {
       };
 
       const result = await createAnalysis(analysisData);
-      
+
       if (result) {
         toast({
           title: "Analysis Created",
@@ -110,10 +134,12 @@ export default function AnalysisForm() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">Create Market Analysis</h2>
-      
+      <h2 className="text-2xl font-semibold mb-6">
+        {submitLabel ? submitLabel : "Create Market Analysis"}
+      </h2>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -257,7 +283,7 @@ export default function AnalysisForm() {
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Analysis"}
+              {isSubmitting ? (submitLabel ? "Saving..." : "Creating...") : (submitLabel ?? "Create Analysis")}
             </Button>
           </div>
         </form>

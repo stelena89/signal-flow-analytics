@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +34,17 @@ type SignalFormValues = {
   status: string;
 };
 
-export default function SignalForm() {
+interface SignalFormProps {
+  defaultValues?: Partial<SignalFormValues>;
+  onSubmit?: (data: SignalFormValues) => Promise<void>;
+  submitLabel?: string;
+}
+
+export default function SignalForm({
+  defaultValues,
+  onSubmit,
+  submitLabel,
+}: SignalFormProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,10 +58,25 @@ export default function SignalForm() {
       take_profit: "",
       timeframe: "Daily",
       status: "ACTIVE",
+      ...defaultValues,
     },
   });
 
-  const onSubmit = async (data: SignalFormValues) => {
+  useEffect(() => {
+    if (defaultValues) {
+      form.reset({ ...form.getValues(), ...defaultValues });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValues]);
+
+  const handleSubmit = async (data: SignalFormValues) => {
+    if (onSubmit) {
+      setIsSubmitting(true);
+      await onSubmit(data);
+      setIsSubmitting(false);
+      return;
+    }
+
     if (!user) {
       toast({
         title: "Authentication required",
@@ -79,7 +103,7 @@ export default function SignalForm() {
       };
 
       const result = await createSignal(signalData);
-      
+
       if (result) {
         toast({
           title: "Signal Created",
@@ -101,10 +125,12 @@ export default function SignalForm() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">Create Trading Signal</h2>
+      <h2 className="text-2xl font-semibold mb-6">
+        {submitLabel ? submitLabel : "Create Trading Signal"}
+      </h2>
       
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="pair"
@@ -241,7 +267,7 @@ export default function SignalForm() {
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Signal"}
+              {isSubmitting ? (submitLabel ? "Saving..." : "Creating...") : (submitLabel ?? "Create Signal")}
             </Button>
           </div>
         </form>

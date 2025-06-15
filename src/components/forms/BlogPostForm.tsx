@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,11 +46,21 @@ type BlogPostFormValues = {
   tags: string;
 };
 
-export default function BlogPostForm() {
+interface BlogPostFormProps {
+  defaultValues?: Partial<BlogPostFormValues>;
+  onSubmit?: (data: BlogPostFormValues) => Promise<void>;
+  submitLabel?: string;
+}
+
+export default function BlogPostForm({
+  defaultValues,
+  onSubmit,
+  submitLabel,
+}: BlogPostFormProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [contentType, setContentType] = useState<string>("article");
+  const [contentType, setContentType] = useState<string>(defaultValues?.type || "article");
 
   const form = useForm<BlogPostFormValues>({
     defaultValues: {
@@ -63,10 +72,25 @@ export default function BlogPostForm() {
       video_url: "",
       read_time: "5 min read",
       tags: "",
+      ...defaultValues,
     },
   });
 
-  const onSubmit = async (data: BlogPostFormValues) => {
+  useEffect(() => {
+    if (defaultValues) {
+      setContentType(defaultValues.type || "article");
+      form.reset({ ...form.getValues(), ...defaultValues });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValues]);
+
+  const handleSubmit = async (data: BlogPostFormValues) => {
+    if (onSubmit) {
+      setIsSubmitting(true);
+      await onSubmit(data);
+      setIsSubmitting(false);
+      return;
+    }
     if (!user) {
       toast({
         title: "Authentication required",
@@ -128,10 +152,12 @@ export default function BlogPostForm() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">Create Blog Post</h2>
+      <h2 className="text-2xl font-semibold mb-6">
+        {submitLabel ? submitLabel : "Create Blog Post"}
+      </h2>
       
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="title"
@@ -296,7 +322,7 @@ export default function BlogPostForm() {
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Post"}
+              {isSubmitting ? (submitLabel ? "Saving..." : "Creating...") : (submitLabel ?? "Create Post")}
             </Button>
           </div>
         </form>
