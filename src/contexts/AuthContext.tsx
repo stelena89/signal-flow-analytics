@@ -126,12 +126,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Updated signOut implementation to ensure state is cleared and add logs
   const signOut = async () => {
     try {
+      console.log("[signOut] Called.");
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+
+      // Clear relevant state, just to be sure
+      setSession(null);
+      setUser(null);
+      setIsAdmin(false);
+
+      console.log("[signOut] User and session state cleared.");
       navigate("/");
     } catch (error: any) {
+      console.error("[signOut] Error while signing out:", error);
       throw new Error(error.message || "Error signing out");
     }
   };
