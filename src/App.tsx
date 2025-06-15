@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -26,6 +25,9 @@ import AboutPage from './pages/AboutPage';
 import ChartsPage from './pages/ChartsPage';
 import IndicatorsPage from './pages/IndicatorsPage';
 import DashboardPage from './pages/DashboardPage';
+import EditAnalysisPage from "./pages/EditAnalysisPage";
+import EditSignalPage from "./pages/EditSignalPage";
+import EditBlogPostPage from "./pages/EditBlogPostPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -47,6 +49,9 @@ const App = () => {
               <Route path="/analysis/create" element={<Layout><CreateAnalysisPage /></Layout>} />
               <Route path="/blog/create" element={<Layout><CreateBlogPostPage /></Layout>} />
               <Route path="/signals/create" element={<Layout><CreateSignalPage /></Layout>} />
+              <Route path="/analysis/edit/:id" element={<Layout><EditAnalysisPage /></Layout>} />
+              <Route path="/signals/edit/:id" element={<Layout><EditSignalPage /></Layout>} />
+              <Route path="/blog/edit/:id" element={<Layout><EditBlogPostPage /></Layout>} />
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
               <Route path="/charts" element={<Layout><ChartsPage /></Layout>} />
               <Route path="/indicators" element={<Layout><IndicatorsPage /></Layout>} />
