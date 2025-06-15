@@ -4,26 +4,20 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
-  // Initialize theme from localStorage or system preference
+  // Use system preference or saved theme
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
-      // Check localStorage first
       const savedTheme = localStorage.getItem("theme");
       if (savedTheme) {
         return savedTheme === "dark";
       }
-      // If no saved preference, check system preference
       return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
-    return true; // Default to dark mode
+    return true;
   });
 
-  // Toggle theme function
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
-  };
+  const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
-  // Apply theme class to html element
   useEffect(() => {
     const root = window.document.documentElement;
     if (isDarkMode) {
@@ -37,18 +31,20 @@ const ThemeToggle = () => {
 
   return (
     <Button 
-      variant="ghost" 
-      size="icon" 
+      variant="ghost"
+      size="icon"
+      aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       onClick={toggleTheme}
-      title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+      className="transition-all duration-200 hover:bg-primary/15"
     >
       {isDarkMode ? (
-        <Sun className="h-5 w-5 text-accent" />
+        <Sun className="h-5 w-5 text-blue-700 dark:text-blue-200 transition-all" />
       ) : (
-        <Moon className="h-5 w-5 text-accent" />
+        <Moon className="h-5 w-5 text-blue-700 dark:text-blue-200 transition-all" />
       )}
     </Button>
   );
 };
 
 export default ThemeToggle;
+
