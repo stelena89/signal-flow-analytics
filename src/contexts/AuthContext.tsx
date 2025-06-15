@@ -8,7 +8,7 @@ type AuthContextType = {
   session: Session | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile?: (data: any) => Promise<void>;
   isAdmin: boolean;
@@ -102,9 +102,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: fullName
+          }
+        }
+      });
       if (error) throw error;
     } catch (error: any) {
       throw new Error(error.message || "Error signing up");

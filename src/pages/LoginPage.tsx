@@ -79,7 +79,7 @@ function LoginPage() {
 
   async function onRegisterSubmit(values: z.infer<typeof registerSchema>) {
     try {
-      await signUp(values.email, values.password);
+      await signUp(values.email, values.password, values.name);
       toast({
         title: "Registration successful!",
         description: "Please check your email to verify your account.",

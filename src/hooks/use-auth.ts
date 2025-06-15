@@ -1,6 +1,7 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 
+// Updated useSignUp to accept fullName
 export const useSignIn = () => {
   const { signIn, isLoading } = useAuth();
   return { signIn, isLoading };
@@ -8,6 +9,7 @@ export const useSignIn = () => {
 
 export const useSignUp = () => {
   const { signUp, isLoading } = useAuth();
+  // Return signUp(email, password, fullName)
   return { signUp, isLoading };
 };
 
