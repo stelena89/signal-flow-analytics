@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -6,6 +7,7 @@ import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useSignIn, useSignUp } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuthStatus } from "@/hooks/use-auth";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,6 +43,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const { signIn } = useSignIn();
   const { signUp } = useSignUp();
+  const { isAuthenticated, isLoading } = useAuthStatus();
 
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -58,6 +61,13 @@ function LoginPage() {
       password: "",
     },
   });
+
+  // Redirect away from login/register if already authenticated (and not loading)
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
   async function onLoginSubmit(values: z.infer<typeof loginSchema>) {
     console.log("Login form submitted", values);
@@ -227,3 +237,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
