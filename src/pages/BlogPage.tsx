@@ -29,7 +29,7 @@ import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 
 const BlogPage = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
@@ -82,8 +82,8 @@ const BlogPage = () => {
               Educational articles, videos, and strategy guides for traders of all levels.
             </p>
           </div>
-          {/* Show create button only for logged in users */}
-          {user && (
+          {/* Show create button only for admin users */}
+          {user && isAdmin && (
             <Link to="/blog/create">
               <Button>
                 <Plus className="mr-2 h-4 w-4" />

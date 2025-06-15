@@ -22,7 +22,7 @@ import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AnalysisPage = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [assetFilter, setAssetFilter] = useState<string | null>(null);
   const [timeframeFilter, setTimeframeFilter] = useState<string | null>(null);
@@ -82,9 +82,8 @@ const AnalysisPage = () => {
               In-depth technical and fundamental analysis of major markets.
             </p>
           </div>
-          
-          {/* Show create button only for logged in users */}
-          {user && (
+          {/* Show create button only for admin users */}
+          {user && isAdmin && (
             <Link to="/analysis/create">
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
