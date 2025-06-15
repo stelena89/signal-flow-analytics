@@ -78,6 +78,7 @@ function LoginPage() {
   }
 
   async function onRegisterSubmit(values: z.infer<typeof registerSchema>) {
+    console.log("[onRegisterSubmit] Submitted values:", values);
     try {
       await signUp(values.email, values.password, values.name);
       toast({
@@ -86,9 +87,10 @@ function LoginPage() {
       });
       setTab("login");
     } catch (error: any) {
+      console.error("[onRegisterSubmit] Registration failed:", error);
       toast({
         title: "Registration failed.",
-        description: error.message,
+        description: error?.message || String(error) || "Unknown error.",
         variant: "destructive",
       });
     }

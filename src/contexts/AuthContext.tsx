@@ -104,6 +104,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
+      console.log("[signUp] Called with:", email, password, fullName);
       const redirectUrl = `${window.location.origin}/auth/callback`;
       const { error } = await supabase.auth.signUp({
         email,
@@ -115,8 +116,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
       });
-      if (error) throw error;
+      if (error) {
+        console.error("[signUp] Supabase error:", error);
+        throw new Error(error.message || "Error signing up");
+      }
     } catch (error: any) {
+      console.error("[signUp] Caught error:", error);
       throw new Error(error.message || "Error signing up");
     }
   };
