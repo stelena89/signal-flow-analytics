@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function EditSignalPage() {
   const { id } = useParams<{ id: string }>();
-  const [initialData, setInitialData] = useState(null);
+  const [initialData, setInitialData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();

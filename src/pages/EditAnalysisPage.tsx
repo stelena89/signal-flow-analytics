@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function EditAnalysisPage() {
   const { id } = useParams<{ id: string }>();
-  const [initialData, setInitialData] = useState(null);
+  const [initialData, setInitialData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
@@ -24,7 +24,11 @@ export default function EditAnalysisPage() {
         navigate("/analysis");
         return;
       }
-      setInitialData(analysis);
+      // Convert tags: string[] -> string (for input)
+      setInitialData({
+        ...analysis,
+        tags: Array.isArray(analysis.tags) ? analysis.tags.join(", ") : "",
+      });
       setLoading(false);
     }
     load();
@@ -42,7 +46,15 @@ export default function EditAnalysisPage() {
         <AnalysisForm
           defaultValues={initialData}
           onSubmit={async (values) => {
-            const result = await updateAnalysis(id!, values);
+            // Convert tags string to array before saving
+            const updates = {
+              ...values,
+              tags: values.tags
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter((tag) => tag !== ""),
+            };
+            const result = await updateAnalysis(id!, updates);
             if (result) {
               toast({ title: "Analysis updated" });
               navigate("/analysis");

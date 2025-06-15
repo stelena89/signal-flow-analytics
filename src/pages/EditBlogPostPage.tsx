@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function EditBlogPostPage() {
   const { id } = useParams<{ id: string }>();
-  const [initialData, setInitialData] = useState(null);
+  const [initialData, setInitialData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
@@ -24,7 +24,11 @@ export default function EditBlogPostPage() {
         navigate("/blog");
         return;
       }
-      setInitialData(blogPost);
+      // Convert tags: string[] -> string
+      setInitialData({
+        ...blogPost,
+        tags: Array.isArray(blogPost.tags) ? blogPost.tags.join(", ") : "",
+      });
       setLoading(false);
     }
     load();
@@ -42,7 +46,15 @@ export default function EditBlogPostPage() {
         <BlogPostForm
           defaultValues={initialData}
           onSubmit={async (values) => {
-            const result = await updateBlogPost(id!, values);
+            // Convert tags string to array before saving
+            const updates = {
+              ...values,
+              tags: values.tags
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter((tag) => tag !== ""),
+            };
+            const result = await updateBlogPost(id!, updates);
             if (result) {
               toast({ title: "Blog post updated" });
               navigate("/blog");
