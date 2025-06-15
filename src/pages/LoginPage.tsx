@@ -60,6 +60,7 @@ function LoginPage() {
   });
 
   async function onLoginSubmit(values: z.infer<typeof loginSchema>) {
+    console.log("Login form submitted", values);
     try {
       await signIn(values.email, values.password);
       toast({
@@ -111,7 +112,11 @@ function LoginPage() {
               
               <TabsContent value="login">
                 <Form {...loginForm}>
-                  <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4 mt-4">
+                  <form
+                    onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+                    className="space-y-4 mt-4"
+                    data-testid="login-form"
+                  >
                     <FormField
                       control={loginForm.control}
                       name="email"
@@ -138,7 +143,16 @@ function LoginPage() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full">Login</Button>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      data-testid="login-button"
+                      onClick={() => {
+                        console.log('Login button clicked');
+                      }}
+                    >
+                      Login
+                    </Button>
                   </form>
                 </Form>
               </TabsContent>
